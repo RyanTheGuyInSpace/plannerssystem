@@ -24,11 +24,11 @@ public class UserRepositoryTests {
     @Test
     public void testCreateUser() {
         User user = new User();
-        user.setEmailAddress("test.user@Knights.ucf.edu");
-        user.setPassword("testPassword");
-        user.setUserName("testuser");
-        user.setFirstName("John");
-        user.setLastName("Smith");
+        user.setEmailAddress("test.user2@Knights.ucf.edu");
+        user.setPassword("testPassword2");
+        user.setUserName("testuser2");
+        user.setFirstName("George");
+        user.setLastName("Washington");
 
         User savedUser = repo.save(user);
 
