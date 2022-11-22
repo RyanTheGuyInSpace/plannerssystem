@@ -104,6 +104,24 @@ public class Routine {
     public void setId(String id) {
         this.id = id;
     }
+    public HashMap<String, Routine> getSubroutines() {
+        return subroutines;
+    }
+    public void setSubroutines(HashMap<String, Routine> subroutines) {
+        this.subroutines = subroutines;
+    }
+    public HashMap<String, Task> getTasks() {
+        return tasks;
+    }
+    public void setTasks(HashMap<String, Task> tasks) {
+        this.tasks = tasks;
+    }
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
 
     @Override
     public String toString() {
@@ -125,7 +143,6 @@ public class Routine {
             System.out.println(this.subroutines.get(key));
         }
     }
-
 
     public static String genId(){
         String id;

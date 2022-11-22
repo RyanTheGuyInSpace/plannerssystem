@@ -76,6 +76,13 @@ public class Event {
         this.id = id;
     }
 
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
     public static String genId(){
         String id;
         Date cur = new Date();
