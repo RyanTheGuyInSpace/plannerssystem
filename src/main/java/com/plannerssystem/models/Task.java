@@ -11,23 +11,32 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
+
+    @Column(name = "name", nullable = false, length = 100)
     private String name;
+
+    @Column(name = "description", nullable = false, length = 2048)
     private String description;
-    private Time start;
-    private Time end;
+
+    @Column(name = "startDate", nullable = true)
+    private Time startDate;
+
+    @Column(name = "endDate", nullable = true)
+    private Time endDate;
+
+    @Column(name = "isDeleted", nullable = false)
     private boolean isDeleted;
 
     public Task() {
 
     }
 
-    public Task(String name, String description, Time start, Time end) {
+    public Task(String name, String description, Time startDate, Time endDate) {
         setName(name);
         setDescription(description);
-        setStart(start);
-        setEnd(end);
-        setId(genId());
+        setStartDate(startDate);
+        setEndDate(endDate);
     }
 
     public String getName() {
@@ -46,27 +55,27 @@ public class Task {
         this.description = description;
     }
 
-    public Time getStart() {
-        return start;
+    public Time getStartDate() {
+        return startDate;
     }
 
-    public void setStart(Time start) {
-        this.start = start;
+    public void setStartDate(Time startDate) {
+        this.startDate = startDate;
     }
 
-    public Time getEnd() {
-        return end;
+    public Time getEndDate() {
+        return endDate;
     }
 
-    public void setEnd(Time end) {
-        this.end = end;
+    public void setEndDate(Time endDate) {
+        this.endDate = endDate;
     }
 
-    public String getId() {
-        return id;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -84,8 +93,8 @@ public class Task {
         return "Task{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", start=" + start +
-                ", end=" + end +
+                ", start=" + startDate +
+                ", end=" + endDate +
                 ", id=" + id +
                 '}';
     }

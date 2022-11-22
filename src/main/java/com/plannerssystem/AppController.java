@@ -40,12 +40,12 @@ public class AppController {
         return "register_success";
     }
 
-    @GetMapping("/users")
+    @GetMapping("/home")
     public String listUsers(Model model) {
         List<User> listUsers = userRepository.findAll();
         model.addAttribute("listUsers", listUsers);
 
-        return "users";
+        return "home";
     }
 
 }

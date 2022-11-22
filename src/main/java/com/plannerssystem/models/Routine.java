@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.sql.Time;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 @Entity
@@ -12,44 +13,55 @@ public class Routine {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
+
+    @Column(name = "name", nullable = false, length = 100)
     private String name;
+
+    @Column(name = "description", nullable = false, length = 2048)
     private String description;
-    private Time start;
-    private Time end;
+
+    @Column(name = "startDate", nullable = true)
+    private Time startDate;
+
+    @Column(name = "endDate", nullable = true)
+    private Time endDate;
+
+    @Column(name = "date", nullable = false, length = 100)
     private Date date;
-    private HashMap<String, Routine> subroutines = new HashMap<>();
-    private HashMap<String, Task> tasks = new HashMap<>();
+
+    //private List<Routine> subroutines;
+
+    //private List<Task> tasks;
+
+    @Column(name = "isDeleted", nullable = false)
     private boolean isDeleted;
 
     public Routine() {
 
     }
 
-    public Routine(String name, String description, Time start, Time end, Date date) {
+    public Routine(String name, String description, Time startDate, Time endDate, Date date) {
         setName(name);
         setDescription(description);
-        setStart(start);
-        setEnd(end);
+        setStartDate(startDate);
+        setEndDate(endDate);
         setDate(date);
-        setId(genId());
     }
 
     public Routine(String name, String description) {
         setName(name);
         setDescription(description);
         // check if id already exists, if so run genId() as long as needed
-        setId(genId());
     }
 
-    public Routine(String name, String description, Time start, Time end, Date date, String id,
+    public Routine(String name, String description, Time startDate, Time endDate, Date date, String id,
                    HashMap<String, Routine> subroutines, HashMap<String, Task> tasks) {
         setName(name);
         setDescription(description);
-        setStart(start);
-        setEnd(end);
+        setStartDate(startDate);
+        setEndDate(endDate);
         setDate(date);
-        setId(id);
         /*
         How we do we load these?
         this.subroutines = subroutines;
@@ -73,20 +85,20 @@ public class Routine {
         this.description = description;
     }
 
-    public Time getStart() {
-        return start;
+    public Time getStartDate() {
+        return startDate;
     }
 
-    public void setStart(Time start) {
-        this.start = start;
+    public void setStartDate(Time startDate) {
+        this.startDate = startDate;
     }
 
-    public Time getEnd() {
-        return end;
+    public Time getEndDate() {
+        return endDate;
     }
 
-    public void setEnd(Time end) {
-        this.end = end;
+    public void setEndDate(Time endDate) {
+        this.endDate = endDate;
     }
 
     public Date getDate() {
@@ -97,11 +109,11 @@ public class Routine {
         this.date = date;
     }
 
-    public String getId() {
-        return id;
+    public long getId() {
+        return this.id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -110,8 +122,8 @@ public class Routine {
         System.out.println("Routine{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", start=" + start +
-                ", end=" + end +
+                ", start=" + startDate +
+                ", end=" + endDate +
                 ", date=" + date +
                 ", id='" + id + '\'' +
                 ", subroutines=");
@@ -121,9 +133,9 @@ public class Routine {
     }
 
     public void printSubroutines(){
-        for (String key:this.subroutines.keySet()){
-            System.out.println(this.subroutines.get(key));
-        }
+//        for (String key:this.subroutines.keySet()){
+//            System.out.println(this.subroutines.get(key));
+//        }
     }
 
 
@@ -144,16 +156,16 @@ public class Routine {
 
         // check for if routine is already a subroutine of this routine, maybe ask user if they want to continue
 
-        this.subroutines.put(sub.id, sub);
+        //this.subroutines.add(sub);
     }
 
     public void addTask(Task t){
         // check if task already is in this routine, display message if so
-        if (this.tasks.containsKey(t.getId())){
-            System.out.println("TASK ALREADY EXISTS IN " + this.getName());
-            return;
-        }
+//        if (this.tasks.contains(t.getId())){
+//            System.out.println("TASK ALREADY EXISTS IN " + this.getName());
+//            return;
+//        }
 
-        this.tasks.put(t.getId(), t);
+        //this.tasks.add(t);
     }
 }

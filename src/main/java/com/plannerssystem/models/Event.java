@@ -2,8 +2,6 @@ package com.plannerssystem.models;
 
 import javax.persistence.*;
 import java.sql.Time;
-import java.util.Date;
-import java.util.Random;
 
 @Entity
 @Table(name = "Events")
@@ -11,11 +9,21 @@ public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private long id;
+
+    @Column(name = "name", nullable = false, length = 100)
     private String name;
+
+    @Column(name = "description", nullable = false, length = 2048)
     private String description;
-    private Time start;
-    private Time end;
+
+    @Column(name = "startDate", nullable = true)
+    private Time startDate;
+
+    @Column(name = "endDate", nullable = true)
+    private Time endDate;
+
+    @Column(name = "isDelete", nullable = false)
     private boolean isDeleted;
 
     public Event() {
@@ -25,15 +33,13 @@ public class Event {
     public Event(String name, String description) {
         setName(name);
         setDescription(description);
-        setId(genId());
     }
 
-    public Event(String name, String description, Time start, Time end) {
+    public Event(String name, String description, Time startDate, Time endDate) {
         setName(name);
         setDescription(description);
-        setId(genId());
-        setStart(start);
-        setEnd(end);
+        setStartDate(startDate);
+        setEndDate(endDate);
     }
 
     public String getName() {
@@ -52,36 +58,27 @@ public class Event {
         this.description = description;
     }
 
-    public Time getStart() {
-        return start;
+    public Time getStartDate() {
+        return startDate;
     }
 
-    public void setStart(Time start) {
-        this.start = start;
+    public void setStartDate(Time startDate) {
+        this.startDate = startDate;
     }
 
-    public Time getEnd() {
-        return end;
+    public Time getEndDate() {
+        return endDate;
     }
 
-    public void setEnd(Time end) {
-        this.end = end;
+    public void setEndDate(Time endDate) {
+        this.endDate = endDate;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
-    }
-
-    public static String genId(){
-        String id;
-        Date cur = new Date();
-        Random r = new Random(cur.getTime());
-        id = String.valueOf((char)('a'+r.nextInt(26))) + String.valueOf(r.nextInt(999));
-        // we would write a check and run algo again if dupe
-        return id;
     }
 }
