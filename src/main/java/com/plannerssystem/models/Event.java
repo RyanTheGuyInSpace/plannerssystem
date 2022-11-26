@@ -11,7 +11,7 @@ public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private long id;
     private String name;
     private String description;
     private Time start;
@@ -25,13 +25,11 @@ public class Event {
     public Event(String name, String description) {
         setName(name);
         setDescription(description);
-        setId(genId());
     }
 
     public Event(String name, String description, Time start, Time end) {
         setName(name);
         setDescription(description);
-        setId(genId());
         setStart(start);
         setEnd(end);
     }
@@ -68,11 +66,11 @@ public class Event {
         this.end = end;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
