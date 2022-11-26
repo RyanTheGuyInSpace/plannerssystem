@@ -1,10 +1,46 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>Tasks</title>
-</head>
-<body>
-<p th:text="${user.emailAddress}">Email Address</p>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Tasks</title>
+    </head>
+    <body>
+        <div th:replace="fragments :: scripts"></div>
+        <div th:replace="fragments :: navbar"></div>
+
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <h3>Tasks</h3>
+                    <button class="btn btn-primary" type="button" onclick="loadCreateTaskModal()"><i class="material-icons">add</i></button>
+                </div>
+
+                <div class="card-body">
+                    <p th:text="${user.emailAddress}">Email Address</p>
+                </div>
+
+                <div class="card-footer">
+
+                </div>
+            </div>
+        </div>
+
+        <div id="modal">
+
+        </div>
+    </body>
+
+    <script>
+        function loadCreateTaskModal() {
+            var url = "/tasks/create";
+
+            console.log(url);
+
+            $('#modal').load(url, function () {
+                $('#createTaskModal').modal('show');
+                console.log("loaded createtaskmodal");
+            })
+        }
+    </script>
 </html>
+

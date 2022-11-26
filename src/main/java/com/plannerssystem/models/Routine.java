@@ -116,21 +116,26 @@ public class Routine {
     public void setId(long id) {
         this.id = id;
     }
-    public HashMap<String, Routine> getSubroutines() {
+
+    /*public List<Routine> getSubroutines() {
         return subroutines;
     }
-    public void setSubroutines(HashMap<String, Routine> subroutines) {
+    public void setSubroutines(List<Routine> subroutines) {
         this.subroutines = subroutines;
     }
-    public HashMap<String, Task> getTasks() {
+
+    public List<Task> getTasks() {
         return tasks;
     }
-    public void setTasks(HashMap<String, Task> tasks) {
+
+    public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
-    }
+    }*/
+
     public boolean isDeleted() {
         return isDeleted;
     }
+
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
     }
