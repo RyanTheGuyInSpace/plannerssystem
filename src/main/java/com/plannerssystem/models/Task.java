@@ -85,13 +85,7 @@ public class Task {
     public void setId(Long id) {
         this.id = id;
     }
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
-
+    
     public boolean isDeleted() {
         return isDeleted;
     }
