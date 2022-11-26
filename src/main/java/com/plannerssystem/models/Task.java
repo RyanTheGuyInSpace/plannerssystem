@@ -11,23 +11,39 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
+
+    @Column(name = "name", nullable = false, length = 100)
     private String name;
+
+    @Column(name = "description", nullable = false, length = 2048)
     private String description;
-    private Time start;
-    private Time end;
+
+    @Column(name = "startDate", nullable = true)
+    private Time startDate;
+
+    @Column(name = "endDate", nullable = true)
+    private Time endDate;
+
+    @Column(name = "isDeleted", nullable = false)
     private boolean isDeleted;
+
+    @Column(name = "dateCreated", nullable = false)
+    private Date dateCreated;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Task() {
 
     }
 
-    public Task(String name, String description, Time start, Time end) {
-        setName(name);
-        setDescription(description);
-        setStart(start);
-        setEnd(end);
-        setId(genId());
+    public Task(String name, String description, Time startDate, Time endDate) {
+        this.setName(name);
+        this.setDescription(description);
+        this.setStartDate(startDate);
+        this.setEndDate(endDate);
     }
 
     public String getName() {
@@ -46,27 +62,27 @@ public class Task {
         this.description = description;
     }
 
-    public Time getStart() {
-        return start;
+    public Time getStartDate() {
+        return startDate;
     }
 
-    public void setStart(Time start) {
-        this.start = start;
+    public void setStartDate(Time startDate) {
+        this.startDate = startDate;
     }
 
-    public Time getEnd() {
-        return end;
+    public Time getEndDate() {
+        return endDate;
     }
 
-    public void setEnd(Time end) {
-        this.end = end;
+    public void setEndDate(Time endDate) {
+        this.endDate = endDate;
     }
 
-    public String getId() {
-        return id;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public boolean isDeleted() {
@@ -76,7 +92,23 @@ public class Task {
         isDeleted = deleted;
     }
 
-    public static  String genId(){
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public static String genId(){
         String id;
         Date cur = new Date();
         Random r = new Random(cur.getTime());
@@ -90,8 +122,8 @@ public class Task {
         return "Task{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", start=" + start +
-                ", end=" + end +
+                ", start=" + startDate +
+                ", end=" + endDate +
                 ", id=" + id +
                 '}';
     }

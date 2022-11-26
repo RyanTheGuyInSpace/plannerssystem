@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "Users")
@@ -38,6 +39,9 @@ public class User implements UserDetails {
 
     @Column(nullable = false, length = 64)
     private String password;
+
+    @OneToMany(mappedBy = "user")
+    private List<Task> tasks;
 
     public Long getId() {
         return id;
