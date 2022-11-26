@@ -69,6 +69,12 @@ public class Task {
     public void setId(String id) {
         this.id = id;
     }
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
 
     public static  String genId(){
         String id;
