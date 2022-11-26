@@ -1,7 +1,5 @@
 package com.plannerssystem.models;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import javax.persistence.*;
 import java.sql.Time;
 import java.util.Date;
@@ -91,6 +89,7 @@ public class Task {
     public boolean isDeleted() {
         return isDeleted;
     }
+
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
     }
