@@ -1,4 +1,4 @@
-package com.plannerssystem;
+package com.plannerssystem.controllers;
 
 import com.plannerssystem.models.User;
 import com.plannerssystem.utils.UserRepository;
@@ -13,7 +13,6 @@ import java.util.List;
 
 @Controller
 public class AppController {
-
     @Autowired
     private UserRepository userRepository;
 
@@ -47,5 +46,4 @@ public class AppController {
 
         return "home";
     }
-
 }

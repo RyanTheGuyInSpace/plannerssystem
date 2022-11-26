@@ -28,15 +28,22 @@ public class Task {
     @Column(name = "isDeleted", nullable = false)
     private boolean isDeleted;
 
+    @Column(name = "dateCreated", nullable = false)
+    private Date dateCreated;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Task() {
 
     }
 
     public Task(String name, String description, Time startDate, Time endDate) {
-        setName(name);
-        setDescription(description);
-        setStartDate(startDate);
-        setEndDate(endDate);
+        this.setName(name);
+        this.setDescription(description);
+        this.setStartDate(startDate);
+        this.setEndDate(endDate);
     }
 
     public String getName() {
@@ -79,7 +86,23 @@ public class Task {
         this.id = id;
     }
 
-    public static  String genId(){
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public static String genId(){
         String id;
         Date cur = new Date();
         Random r = new Random(cur.getTime());

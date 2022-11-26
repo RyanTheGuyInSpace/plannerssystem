@@ -9,6 +9,47 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" />
         <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    </div>
+
+    <div id="navbar" class="pb-3" th:fragment="navbar">
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #CCFFCC;">
+            <a class="navbar-brand" th:href="@{/home}">Planners System</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/tasks}">Tasks</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/events}">Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/routines}">Routines</a>
+                    </li>
+
+                </ul>
+                <ul class="navbar-nav ml-auto d-flex">
+                    <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <b>[[${#request.userPrincipal.principal.fullName}]]</b>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <input class="dropdown-item" type="submit" value="Log Out" />
+                            </div>
+                        </li>
+                    </form>
+                </ul>
+
+            </div>
+        </nav>
     </div>
 </body>
 </html>
