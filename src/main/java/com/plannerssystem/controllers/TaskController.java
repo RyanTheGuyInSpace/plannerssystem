@@ -2,6 +2,7 @@ package com.plannerssystem.controllers;
 
 import com.plannerssystem.models.Task;
 import com.plannerssystem.models.User;
+import com.plannerssystem.utils.TaskRepository;
 import com.plannerssystem.utils.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -19,6 +20,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class TaskController {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private TaskRepository taskRepository;
 
     @GetMapping("")
     public String tasksHome(Model model) {
@@ -41,9 +45,11 @@ public class TaskController {
 
     @PostMapping("/create")
     public ModelAndView createTask(@ModelAttribute Task task) {
+        // Finds the user calling the method
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
 
+        // Queries the user from the database
         User user = userRepository.findByUserName(currentPrincipalName);
 
         user.addTask(task);

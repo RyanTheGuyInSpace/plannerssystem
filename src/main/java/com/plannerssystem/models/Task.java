@@ -1,5 +1,7 @@
 package com.plannerssystem.models;
 
+import org.hibernate.annotations.Fetch;
+
 import javax.persistence.*;
 import java.sql.Time;
 import java.util.Date;
@@ -28,11 +30,17 @@ public class Task {
     @Column(name = "isDeleted", nullable = false)
     private boolean isDeleted;
 
+    @Column(name = "isCompleted", nullable = false)
+    private boolean isCompleted;
+
+    @Column(name = "dateCompleted")
+    private Date dateCompleted;
+
     @Column(name = "dateCreated", nullable = false)
     private Date dateCreated;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
     public Task() {
@@ -44,6 +52,22 @@ public class Task {
         this.setDescription(description);
         this.setStartDate(startDate);
         this.setEndDate(endDate);
+    }
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getName() {

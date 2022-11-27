@@ -1,13 +1,13 @@
 package com.plannerssystem.models;
 
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "Users")
@@ -40,8 +40,8 @@ public class User implements UserDetails {
     @Column(nullable = false, length = 64)
     private String password;
 
-    @OneToMany(mappedBy = "user")
-    private List<Task> tasks;
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private Set<Task> tasks = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -122,6 +122,11 @@ public class User implements UserDetails {
     }
 
     public void addTask(Task task) {
+        task.setUser(this);
         this.tasks.add(task);
+    }
+
+    public Set<Task> getTasks() {
+        return this.tasks;
     }
 }
