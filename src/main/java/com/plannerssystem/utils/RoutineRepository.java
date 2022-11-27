@@ -12,4 +12,7 @@ public interface RoutineRepository extends JpaRepository<Routine, Long> {
 
     @Query("SELECT r FROM Routine r WHERE user = ?1 AND isDeleted = 0")
     public Set<Routine> getRoutinesByUser(User user);
+
+    @Query("SELECT r FROM Routine r WHERE id = ?1")
+    public Routine getRoutineByID(long routineID);
 }

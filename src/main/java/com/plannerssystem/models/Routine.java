@@ -62,6 +62,10 @@ public class Routine implements Serializable {
         this.user = user;
     }
 
+    public Set<Task> getTasks() {
+        return tasks;
+    }
+
     public String getName() {
         return name;
     }

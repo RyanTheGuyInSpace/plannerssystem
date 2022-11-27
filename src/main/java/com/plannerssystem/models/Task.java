@@ -61,6 +61,14 @@ public class Task implements Serializable {
         this.setEndDate(endDate);
     }
 
+    public Routine getRoutine() {
+        return routine;
+    }
+
+    public void setRoutine(Routine routine) {
+        this.routine = routine;
+    }
+
     public boolean isCompleted() {
         return isCompleted;
     }

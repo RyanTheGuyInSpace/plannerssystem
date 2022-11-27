@@ -26,8 +26,8 @@
         </thead>
         <tbody>
         <tr th:each="event : ${events}">
-          <td th:text="${event.name}"></td>
-          <td th:text="${event.description}"></td>
+          <td class="text-center" th:text="${event.name}"></td>
+          <td class="text-center" th:text="${event.description}"></td>
           <td>
             <a class="btn btn-danger" th:href="@{/events/delete(eventID=${event.id})}"><i class="material-icons">delete</i></a>
           </td>
