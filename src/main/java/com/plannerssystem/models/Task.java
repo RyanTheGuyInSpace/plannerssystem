@@ -22,7 +22,7 @@ public class Task implements Serializable {
     @Column(name = "description", nullable = false, length = 2048)
     private String description;
 
-    @DateTimeFormat(pattern = "mm-dd-yyyy")
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
     @Column(name = "startDate", nullable = true)
     private Date startDate;
 
@@ -54,7 +54,7 @@ public class Task implements Serializable {
 
     }
 
-    public Task(String name, String description, Time startDate, Time endDate) {
+    public Task(String name, String description, Date startDate, Date endDate) {
         this.setName(name);
         this.setDescription(description);
         this.setStartDate(startDate);
@@ -97,7 +97,7 @@ public class Task implements Serializable {
         return startDate;
     }
 
-    public void setStartDate(Time startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
@@ -105,7 +105,7 @@ public class Task implements Serializable {
         return endDate;
     }
 
-    public void setEndDate(Time endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
