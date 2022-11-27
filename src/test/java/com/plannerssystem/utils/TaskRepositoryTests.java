@@ -48,8 +48,16 @@ public class TaskRepositoryTests {
 	void testGetUserTasks() {
 		User user = userRepo.getFirstUserInDatabase();
 
+		Task task = new Task();
+
+		task.setUser(user);
+		task.setName("Test Task");
+		task.setDescription("Test Task Description");
+		task.setDateCreated(new Date());
+
 		Set<Task> userTasks = taskRepo.getTasksByUser(user);
 
+		assertThat(user.getTasks().size() > 0);
 		assertThat(user.getTasks().size() == userTasks.size()).isTrue();
 	}
 

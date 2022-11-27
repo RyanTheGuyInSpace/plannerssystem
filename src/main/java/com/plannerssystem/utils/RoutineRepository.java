@@ -13,6 +13,9 @@ public interface RoutineRepository extends JpaRepository<Routine, Long> {
     @Query("SELECT r FROM Routine r WHERE user = ?1 AND isDeleted = 0 AND parent_id IS NULL")
     public Set<Routine> getRoutinesByUser(User user);
 
+    @Query("SELECT t FROM Routine t WHERE user = ?1 AND (LOWER(name) LIKE %?2% OR LOWER(description) LIKE %?2%) AND isDeleted = 0")
+    public Set<Routine> getRoutinesByKeyword(User user, String keyword);
+
     @Query("SELECT r FROM Routine r WHERE id = ?1")
     public Routine getRoutineByID(long routineID);
 
