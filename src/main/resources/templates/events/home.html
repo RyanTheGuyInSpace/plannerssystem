@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Events</title>
+</head>
+<body>
+<div th:replace="fragments :: scripts"></div>
+<div th:replace="fragments :: navbar"></div>
+
+<div class="container">
+  <div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between">
+      <h3>Events</h3>
+      <button class="btn btn-primary" type="button" onclick="loadCreateEventModal()"><i class="material-icons">add</i></button>
+    </div>
+
+    <div class="card-body">
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th scope="col">Title</th>
+          <th scope="col">Description</th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="event : ${events}">
+          <td th:text="${event.name}"></td>
+          <td th:text="${event.description}"></td>
+          <td>
+            <a class="btn btn-danger" th:href="@{/events/delete(eventID=${event.id})}"><i class="material-icons">delete</i></a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card-footer">
+
+    </div>
+  </div>
+</div>
+
+<div id="modal">
+
+</div>
+</body>
+
+<script>
+        function loadCreateEventModal() {
+            var url = "/events/create";
+
+            $('#modal').load(url, function () {
+                $('#createEventModal').modal('show');
+            })
+        }
+    </script>
+</html>
+

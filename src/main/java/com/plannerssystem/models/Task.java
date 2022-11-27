@@ -1,13 +1,16 @@
 package com.plannerssystem.models;
 
+import org.hibernate.annotations.Fetch;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
-import java.util.Random;
 
 @Entity
 @Table(name = "Tasks")
-public class Task {
+public class Task implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,20 +22,28 @@ public class Task {
     @Column(name = "description", nullable = false, length = 2048)
     private String description;
 
+    @DateTimeFormat(pattern = "mm-dd-yyyy")
     @Column(name = "startDate", nullable = true)
-    private Time startDate;
+    private Date startDate;
 
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
     @Column(name = "endDate", nullable = true)
-    private Time endDate;
+    private Date endDate;
 
     @Column(name = "isDeleted", nullable = false)
     private boolean isDeleted;
 
+    @Column(name = "isCompleted", nullable = false)
+    private boolean isCompleted;
+
+    @Column(name = "dateCompleted")
+    private Date dateCompleted;
+
     @Column(name = "dateCreated", nullable = false)
     private Date dateCreated;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
     public Task() {
@@ -44,6 +55,22 @@ public class Task {
         this.setDescription(description);
         this.setStartDate(startDate);
         this.setEndDate(endDate);
+    }
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getName() {
@@ -62,7 +89,7 @@ public class Task {
         this.description = description;
     }
 
-    public Time getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
@@ -70,7 +97,7 @@ public class Task {
         this.startDate = startDate;
     }
 
-    public Time getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
@@ -102,15 +129,6 @@ public class Task {
         this.dateCreated = dateCreated;
     }
 
-    public static String genId(){
-        String id;
-        Date cur = new Date();
-        Random r = new Random(cur.getTime());
-        id = String.valueOf((char)('a'+r.nextInt(26))) + String.valueOf(r.nextInt(999));
-        // we would write a check and run algo again if dupe
-        return id;
-    }
-
     @Override
     public String toString() {
         return "Task{" +
@@ -120,5 +138,22 @@ public class Task {
                 ", end=" + endDate +
                 ", id=" + id +
                 '}';
+    }
+
+    public Date getDateCompleted() {
+        return dateCompleted;
+    }
+
+    public void setDateCompleted(Date dateCompleted) {
+        this.dateCompleted = dateCompleted;
+    }
+
+    public void complete() {
+        this.setCompleted(true);
+        this.setDateCompleted(new Date());
+    }
+
+    public void delete() {
+        this.setDeleted(true);
     }
 }

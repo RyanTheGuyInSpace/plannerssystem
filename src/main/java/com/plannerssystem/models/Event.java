@@ -1,22 +1,40 @@
 package com.plannerssystem.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
 import java.util.Random;
 
 @Entity
 @Table(name = "Events")
-public class Event {
+public class Event implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(name = "name", nullable = false, length = 100)
     private String name;
+
+    @Column(name = "description", nullable = false, length = 2048)
     private String description;
-    private Time start;
-    private Time end;
+
+    @Column(name = "startDate", nullable = true)
+    private Date startDate;
+
+    @Column(name = "endDate", nullable = true)
+    private Date endDate;
+
+    @Column(name = "isDeleted", nullable = false)
     private boolean isDeleted;
+
+    @Column(name = "dateCreated", nullable = false)
+    private Date dateCreated;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    private User user;
 
     public Event() {
 
@@ -50,20 +68,20 @@ public class Event {
         this.description = description;
     }
 
-    public Time getStart() {
-        return start;
+    public Date getStartDate() {
+        return this.startDate;
     }
 
     public void setStart(Time start) {
-        this.start = start;
+        this.startDate = start;
     }
 
-    public Time getEnd() {
-        return end;
+    public Date getEndDate() {
+        return this.endDate;
     }
 
     public void setEnd(Time end) {
-        this.end = end;
+        this.endDate = end;
     }
 
     public long getId() {
@@ -77,16 +95,36 @@ public class Event {
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
     }
+
     public boolean isDeleted() {
         return isDeleted;
     }
 
-    public static String genId(){
-        String id;
-        Date cur = new Date();
-        Random r = new Random(cur.getTime());
-        id = String.valueOf((char)('a'+r.nextInt(26))) + String.valueOf(r.nextInt(999));
-        // we would write a check and run algo again if dupe
-        return id;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void delete() {
+        this.setDeleted(true);
     }
 }
