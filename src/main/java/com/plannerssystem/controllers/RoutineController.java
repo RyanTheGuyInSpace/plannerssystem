@@ -147,6 +147,36 @@ public class RoutineController {
         return "routines/addTaskToRoutineModal";
     }
 
+    @GetMapping("/addExistingTaskToRoutine")
+    public ModelAndView addExistingTaskToRoutine(long routineID, long taskID, Model model) {
+        // Finds the user calling the method
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Queries the user from the database
+        User user = userRepository.findByUserName(currentPrincipalName);
+
+        Routine targetRoutine = routineRepository.getRoutineByID(routineID);
+        Task taskToAddToRoutine = taskRepository.getTaskByID(taskID);
+
+        // Validate that the Routine and Task exist and that they belong to this User
+        if (targetRoutine == null || !targetRoutine.getUser().equals(user) || taskToAddToRoutine == null || !taskToAddToRoutine.getUser().equals(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        Task newTaskForRoutine = new Task();
+
+        newTaskForRoutine.setName(taskToAddToRoutine.getName());
+        newTaskForRoutine.setDescription(taskToAddToRoutine.getDescription());
+        newTaskForRoutine.setUser(user);
+        newTaskForRoutine.setRoutine(targetRoutine);
+        newTaskForRoutine.setDateCreated(new Date());
+
+        taskRepository.save(newTaskForRoutine);
+
+        return new ModelAndView("redirect:/routines/edit?routineID=" + routineID);
+    }
+
     @GetMapping("/addNewTaskToRoutine")
     public String addNewTaskToRoutineModal(long routineID, Model model) {
         // Finds the user calling the method

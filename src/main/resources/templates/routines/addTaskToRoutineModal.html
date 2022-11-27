@@ -22,7 +22,7 @@
                         <td th:text="${task.name}"></td>
                         <td th:text="${task.description}"></td>
                         <td>
-                            <a class="btn btn-primary" th:href="@{/routines/addTaskToRoutine(routineID=${routine.id})(taskID=${task.id})}"><i class="material-icons">add</i></a>
+                            <a class="btn btn-primary" th:href="@{/routines/addExistingTaskToRoutine(routineID=${routine.id},taskID=${task.id})}"><i class="material-icons">add</i></a>
                         </td>
                     </tr>
                     </tbody>
