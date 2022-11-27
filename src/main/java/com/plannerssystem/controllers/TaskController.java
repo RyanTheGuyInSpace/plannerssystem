@@ -94,4 +94,71 @@ public class TaskController {
 
         return new ModelAndView("redirect:/tasks");
     }
+
+    @GetMapping("/delete")
+    public ModelAndView deleteTask(long taskID) throws ResponseStatusException {
+        // Finds the user calling the method
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Queries the user from the database
+        User user = userRepository.findByUserName(currentPrincipalName);
+
+        Task taskToComplete = taskRepository.getTaskByID(taskID);
+
+        // Make sure the user is completing one of their own Tasks
+        if (!taskToComplete.getUser().equals(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        taskToComplete.delete();
+
+        taskRepository.save(taskToComplete);
+
+        return new ModelAndView("redirect:/tasks");
+    }
+
+    @GetMapping("/edit")
+    public String editTaskModal(long taskID, Model model) {
+        // Finds the user calling the method
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Queries the user from the database
+        User user = userRepository.findByUserName(currentPrincipalName);
+
+        Task taskToEdit = taskRepository.getTaskByID(taskID);
+
+        // Make sure the user is completing one of their own Tasks
+        if (!taskToEdit.getUser().equals(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        model.addAttribute("task", taskToEdit);
+
+        return "tasks/editTaskModal";
+    }
+
+    @PostMapping("/edit")
+    public ModelAndView editTask(@ModelAttribute("task") Task task, long taskID) {
+        // Finds the user calling the method
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Queries the user from the database
+        User user = userRepository.findByUserName(currentPrincipalName);
+
+        Task taskToEdit = taskRepository.getTaskByID(taskID);
+
+        if (taskToEdit == null || !taskToEdit.getUser().equals(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        taskToEdit.setName(task.getName());
+        taskToEdit.setDescription(task.getDescription());
+
+        taskRepository.save(taskToEdit);
+
+        return new ModelAndView("redirect:/tasks");
+    }
 }

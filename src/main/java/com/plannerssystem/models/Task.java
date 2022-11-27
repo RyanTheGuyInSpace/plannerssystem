@@ -152,4 +152,8 @@ public class Task implements Serializable {
         this.setCompleted(true);
         this.setDateCompleted(new Date());
     }
+
+    public void delete() {
+        this.setDeleted(true);
+    }
 }
