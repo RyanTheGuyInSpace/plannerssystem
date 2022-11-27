@@ -260,7 +260,10 @@ public class RoutineController {
         Routine targetParentRoutine = routineRepository.getRoutineByID(routineID);
         Routine targetSubroutine = routineRepository.getRoutineByID(subroutineID);
 
-        if (targetParentRoutine == null || !targetParentRoutine.getUser().equals(user) || targetSubroutine == null || !targetSubroutine.getUser().equals(user)) {
+        if (targetParentRoutine == null || !targetParentRoutine.getUser().equals(user)
+                || targetSubroutine == null
+                || !targetSubroutine.getUser().equals(user)
+                || targetSubroutine.equals(targetParentRoutine)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
