@@ -38,8 +38,23 @@ public class Routine implements Serializable {
     @Column(name = "isDeleted", nullable = false)
     private boolean isDeleted;
 
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "parent_id", referencedColumnName = "id", nullable = true)
+    private Routine parentRoutine;
+
+    @OneToMany(mappedBy = "parentRoutine", fetch = FetchType.EAGER)
+    private Set<Routine> subroutines;
+
     public Routine() {
 
+    }
+
+    public Routine getParentRoutine() {
+        return parentRoutine;
+    }
+
+    public void setParentRoutine(Routine parentRoutine) {
+        this.parentRoutine = parentRoutine;
     }
 
     public void setId(Long id) {
@@ -110,27 +125,16 @@ public class Routine implements Serializable {
         return this.id;
     }
 
-    /*public List<Routine> getSubroutines() {
-        return subroutines;
-    }
-    public void setSubroutines(List<Routine> subroutines) {
-        this.subroutines = subroutines;
-    }
-
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }*/
-
     public boolean isDeleted() {
         return isDeleted;
     }
 
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
+    }
+
+    public Set<Routine> getSubroutines() {
+        return subroutines;
     }
 
     @Override
@@ -143,24 +147,8 @@ public class Routine implements Serializable {
                 ", dateCreated=" + dateCreated +
                 ", id='" + id + '\'' +
                 ", subroutines=");
-                this.printSubroutines();
 
                 return "";
-    }
-
-    public void printSubroutines(){
-//        for (String key:this.subroutines.keySet()){
-//            System.out.println(this.subroutines.get(key));
-//        }
-    }
-
-    public static String genId(){
-        String id;
-        Date cur = new Date();
-        Random r = new Random(cur.getTime());
-        id = String.valueOf((char)('a'+r.nextInt(26))) + String.valueOf(r.nextInt(999));
-        // we would write a check and run algo again if dupe
-        return id;
     }
 
     public void addSubroutine(Routine sub){
@@ -174,13 +162,22 @@ public class Routine implements Serializable {
         //this.subroutines.add(sub);
     }
 
-    public void addTask(Task t){
-        // check if task already is in this routine, display message if so
-//        if (this.tasks.contains(t.getId())){
-//            System.out.println("TASK ALREADY EXISTS IN " + this.getName());
-//            return;
-//        }
 
-        //this.tasks.add(t);
+    public List<Task> cloneTasksToRoutine(Routine targetRoutine) {
+        LinkedList<Task> newTasks = new LinkedList<Task>();
+
+        for (Task task : this.tasks) {
+            Task clonedTask = new Task();
+
+            clonedTask.setName(task.getName());
+            clonedTask.setDescription(task.getDescription());
+            clonedTask.setRoutine(targetRoutine);
+            clonedTask.setUser(targetRoutine.getUser());
+            clonedTask.setDateCreated(new Date());
+
+            newTasks.add(clonedTask);
+        }
+
+        return newTasks;
     }
 }

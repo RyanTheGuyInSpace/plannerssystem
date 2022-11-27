@@ -1,0 +1,36 @@
+<div class="modal fade" id="addSubroutineToRoutineModal" tabindex="-1" role="dialog" aria-labelledby="addSubroutineToRoutineModalLabel"
+     aria-hidden="true" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addSubroutineToRoutineModalLabel">Add Existing Routine as Subroutine</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Description</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="routine : ${routines}">
+                        <td th:text="${routine.name}"></td>
+                        <td th:text="${routine.description}"></td>
+                        <td>
+                            <a class="btn btn-primary" th:href="@{/routines/addExistingSubroutineToRoutine(routineID=${parentRoutine.id},subroutineID=${routine.id})}"><i class="material-icons">add</i></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

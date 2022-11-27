@@ -11,7 +11,7 @@
 <div class="container">
   <div class="card">
     <div class="card-header d-flex align-items-center justify-content-between">
-      <h3>Routines</h3>
+      <h1 class="display-4">Routines</h1>
       <button class="btn btn-primary" type="button" onclick="loadCreateRoutineModal()"><i class="material-icons">add</i></button>
     </div>
 
@@ -26,15 +26,15 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="routine : ${routines}">
-          <td th:text="${routine.name}"></td>
-          <td th:text="${routine.description}"></td>
-          <td th:text="${routine.getTasks().size()}">
-          <td>
-            <a class="btn btn-link" th:href="@{/routines/edit(routineID=${routine.id})}"><i class="material-icons">edit</i></a>
-            <a class="btn btn-danger" th:href="@{/routines/delete(routineID=${routine.id})}"><i class="material-icons">delete</i></a>
-          </td>
-        </tr>
+          <tr th:each="routine : ${routines}">
+            <td th:text="${routine.name}"></td>
+            <td th:text="${routine.description}"></td>
+            <td th:text="${routine.getTasks().size()}">
+            <td>
+              <a class="btn btn-link" th:href="@{/routines/edit(routineID=${routine.id})}"><i class="material-icons">edit</i></a>
+              <a class="btn btn-danger" th:href="@{/routines/delete(routineID=${routine.id})}"><i class="material-icons">delete</i></a>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>

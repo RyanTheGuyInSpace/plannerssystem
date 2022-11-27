@@ -22,6 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -94,8 +95,11 @@ public class RoutineController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
+        Set<Routine> subroutines = routineRepository.getUndeletedSubroutines(targetRoutine);
+
         model.addAttribute("routine", targetRoutine);
         model.addAttribute("routineTasks", targetRoutine.getTasks());
+        model.addAttribute("subroutines", subroutines);
 
         return "routines/edit";
     }
@@ -218,6 +222,90 @@ public class RoutineController {
         task.setRoutine(targetRoutine);
 
         taskRepository.save(task);
+
+        return new ModelAndView("redirect:/routines/edit?routineID=" + routineID);
+    }
+
+    @GetMapping("/addSubroutineToRoutine")
+    public String addSubroutineToRoutineModal(long routineID, Model model) {
+        // Finds the user calling the method
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Queries the user from the database
+        User user = userRepository.findByUserName(currentPrincipalName);
+
+        Routine targetRoutine = routineRepository.getRoutineByID(routineID);
+        Set<Routine> eligibleRoutines = routineRepository.getRoutinesAsSubroutines(user, routineID);
+
+        if (targetRoutine == null || !targetRoutine.getUser().equals(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        model.addAttribute("parentRoutine", targetRoutine);
+        model.addAttribute("routines", eligibleRoutines);
+
+        return "routines/addSubroutineToRoutineModal";
+    }
+
+    @GetMapping("/addExistingSubroutineToRoutine")
+    public ModelAndView addExistingSubroutineToRoutineModal(long routineID, long subroutineID, Model model) {
+        // Finds the user calling the method
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Queries the user from the database
+        User user = userRepository.findByUserName(currentPrincipalName);
+
+        Routine targetParentRoutine = routineRepository.getRoutineByID(routineID);
+        Routine targetSubroutine = routineRepository.getRoutineByID(subroutineID);
+
+        if (targetParentRoutine == null || !targetParentRoutine.getUser().equals(user) || targetSubroutine == null || !targetSubroutine.getUser().equals(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        // Clone the routine and make the clone's parent the target parent Routine
+        Routine newSubroutine = new Routine();
+
+        newSubroutine.setName(targetSubroutine.getName());
+        newSubroutine.setDescription(targetSubroutine.getDescription());
+        newSubroutine.setDateCreated(new Date());
+        newSubroutine.setUser(user);
+        newSubroutine.setParentRoutine(targetParentRoutine);
+
+        Routine savedSubroutine = routineRepository.save(newSubroutine);
+
+        List<Task> clonedTasks = targetSubroutine.cloneTasksToRoutine(savedSubroutine);
+
+        for (Task task : clonedTasks) {
+            taskRepository.save(task);
+        }
+
+        return new ModelAndView("redirect:/routines/edit?routineID=" + routineID);
+    }
+
+    @GetMapping("/removeSubroutineFromRoutine")
+    public ModelAndView removeSubroutineFromRoutine(long routineID, long subroutineID, Model model) {
+        // Finds the user calling the method
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Queries the user from the database
+        User user = userRepository.findByUserName(currentPrincipalName);
+
+        Routine targetParentRoutine = routineRepository.getRoutineByID(routineID);
+        Routine targetSubroutine = routineRepository.getRoutineByID(subroutineID);
+
+        if (targetParentRoutine == null || !targetParentRoutine.getUser().equals(user)
+                || targetSubroutine == null
+                || !targetSubroutine.getUser().equals(user)
+                || !targetSubroutine.getParentRoutine().equals(targetParentRoutine)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        targetSubroutine.setDeleted(true);
+
+        routineRepository.save(targetSubroutine);
 
         return new ModelAndView("redirect:/routines/edit?routineID=" + routineID);
     }
