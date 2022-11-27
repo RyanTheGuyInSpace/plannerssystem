@@ -1,0 +1,46 @@
+<div class="modal fade" id="createReminderModal" tabindex="-1" role="dialog" aria-labelledby="createReminderModalLabel"
+     aria-hidden="true" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createReminderModalLabel">New Reminder</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="#" th:action="@{/reminders/create}" th:object="${reminder}" method="post" id="createReminderForm">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="name">Title</label>
+                            <input class="form-control" id="name" type="text" th:field="*{name}" maxlength="100" autocomplete="off" required />
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" id="description" th:field="*{description}" rows="3" maxlength="2048">
+
+                            </textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="startDate">Start Date</label>
+                                <input type="date" class="form-control" id="startDate" name="startDate" />
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="endDate">End Date</label>
+                                <input type="date" class="form-control" id="endDate" th:field="*{endDate}" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" form="createReminderForm" class="btn btn-primary">Add</button>
+            </div>
+        </div>
+    </div>
+</div>

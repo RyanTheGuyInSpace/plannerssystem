@@ -49,8 +49,8 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Routine> routines = new HashSet<>();
 
-    //@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    //private Set<Reminder> reminders = new HashSet<>();
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private Set<Reminder> reminders = new HashSet<>();
 
     public Long getId() {
         return id;

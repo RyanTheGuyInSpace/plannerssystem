@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Reminders</title>
+</head>
+<body>
+<div th:replace="fragments :: scripts"></div>
+<div th:replace="fragments :: navbar"></div>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h1 class="display-4">Reminders</h1>
+            <button class="btn btn-primary" type="button" onclick="loadCreateReminderModal()"><i class="material-icons">add</i></button>
+        </div>
+
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="reminder : ${reminders}">
+                    <td th:text="${reminder.name}"></td>
+                    <td th:text="${reminder.description}"></td>
+                    <td>
+                        <a class="btn btn-link" th:href="@{/reminders/edit(reminderID=${reminder.id})}"><i class="material-icons">edit</i></a>
+                        <a class="btn btn-danger" th:href="@{/reminders/delete(reminderID=${reminder.id})}"><i class="material-icons">delete</i></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-footer">
+
+        </div>
+    </div>
+</div>
+
+<div id="modal">
+
+</div>
+</body>
+
+<script>
+        function loadCreateReminderModal() {
+            var url = "/reminders/create";
+
+            $('#modal').load(url, function () {
+                $('#createReminderModal').modal('show');
+            })
+        }
+    </script>
+</html>
+
