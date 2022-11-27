@@ -8,7 +8,7 @@
         <div th:replace="fragments :: scripts"></div>
         <div th:replace="fragments :: navbar"></div>
 
-        <div class="container-fluid">
+        <div class="container">
             <div class="card">
                 <div class="card-header d-flex align-items-center justify-content-between">
                     <h3>Tasks</h3>
@@ -16,7 +16,25 @@
                 </div>
 
                 <div class="card-body">
-                    <p th:text="${user.emailAddress}">Email Address</p>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Title</th>
+                                <th scope="col">Description</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="task : ${tasks}">
+                                <td th:text="${task.name}"></td>
+                                <td th:text="${task.description}"></td>
+                                <td>
+                                    <a class="btn btn-primary" th:href="@{/tasks/complete(taskID=${task.id})}"><i class="material-icons">check</i></a>
+                                    <a class="btn btn-danger" th:href="@{/tasks/delete(taskID=${task.id})}"><i class="material-icons">delete</i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
                 <div class="card-footer">

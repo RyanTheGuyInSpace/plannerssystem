@@ -25,7 +25,7 @@ public class UserRepositoryTests {
     private UserRepository repo;
 
     @Test
-    public void testCreateUser() {
+    void testCreateUser() {
         User user = new User();
         user.setEmailAddress("test.user10@Knights.ucf.edu");
         user.setPassword("testPassword2");
@@ -37,14 +37,21 @@ public class UserRepositoryTests {
 
         User existingUser = entityManagerFactory.find(User.class, savedUser.getId());
 
-        assertThat(user.getEmailAddress().equals(existingUser.getEmailAddress()));
+        assertThat(user.getEmailAddress()).isEqualTo(existingUser.getEmailAddress());
     }
 
     @Test
-    public void testFindById() {
-        User user = repo.findById(1);
+    void testFindById() {
+        User user = repo.findById(4);
 
-        assertThat(user.getId() == 1);
+        assertThat(user.getId()).isEqualTo(4);
+    }
+
+    @Test
+    void testGetFirstUserInDatabase() {
+        User firstUserInDatabase = repo.getFirstUserInDatabase();
+
+        assertThat(firstUserInDatabase).isNotNull();
     }
 
 }

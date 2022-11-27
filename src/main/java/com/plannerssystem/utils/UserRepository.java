@@ -18,4 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u WHERE u.id = ?1")
     public User findById(long Id);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM users u ORDER BY id ASC LIMIT 1")
+    public User getFirstUserInDatabase();
 }

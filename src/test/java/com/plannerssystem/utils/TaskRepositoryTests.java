@@ -29,8 +29,8 @@ public class TaskRepositoryTests {
 	private TaskRepository taskRepo;
 
 	@Test
-	public void testAddTaskToUser() {
-		User user = userRepo.findById(1);
+	void testAddTask() {
+		User user = userRepo.getFirstUserInDatabase();
 
 		Task task = new Task();
 
@@ -41,15 +41,49 @@ public class TaskRepositoryTests {
 
 		Task savedTask = taskRepo.save(task);
 
-		assertThat(savedTask.getUser().getId().equals(user.getId()));
+		assertThat(savedTask.getUser().getId()).isEqualTo(user.getId());
 	}
 
 	@Test
-	public void testGetUserTasks() {
-		User user = userRepo.findById(2);
+	void testGetUserTasks() {
+		User user = userRepo.getFirstUserInDatabase();
 
 		Set<Task> userTasks = taskRepo.getTasksByUser(user);
 
-		assertThat(user.getTasks().size() == userTasks.size());
+		assertThat(user.getTasks().size() == userTasks.size()).isTrue();
+	}
+
+	@Test
+	void testGetTaskByID() {
+		User user = userRepo.getFirstUserInDatabase();
+
+		Task task = new Task();
+
+		task.setDateCreated(new Date());
+		task.setName("New Task for Test");
+		task.setDescription("New Task for Test Description");
+		task.setUser(user);
+
+		Task savedTask = taskRepo.save(task);
+
+		Task requeriedTask = taskRepo.getTaskByID(savedTask.getId());
+
+		assertThat(savedTask.getId()).isEqualTo( requeriedTask.getId());
+	}
+
+	@Test
+	void testTaskEagerLoadingOfUser() {
+		User user = userRepo.getFirstUserInDatabase();
+
+		Task task = new Task();
+
+		task.setDateCreated(new Date());
+		task.setName("New Task for Test");
+		task.setDescription("New Task for Test Description");
+		task.setUser(user);
+
+		Task savedTask = taskRepo.save(task);
+
+		assertThat(savedTask.getUser()).isNotNull();
 	}
 }
