@@ -46,6 +46,10 @@ public class Task implements Serializable {
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "routine_id", referencedColumnName = "id", nullable = true)
+    private Routine routine;
+
     public Task() {
 
     }

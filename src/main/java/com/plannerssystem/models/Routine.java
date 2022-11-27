@@ -1,15 +1,13 @@
 package com.plannerssystem.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Time;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Entity
 @Table(name = "Routines")
-public class Routine {
+public class Routine implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,17 +20,20 @@ public class Routine {
     private String description;
 
     @Column(name = "startDate", nullable = true)
-    private Time startDate;
+    private Date startDate;
 
     @Column(name = "endDate", nullable = true)
-    private Time endDate;
+    private Date endDate;
 
-    @Column(name = "date", nullable = false, length = 100)
-    private Date date;
+    @Column(name = "dateCreated", nullable = false, length = 100)
+    private Date dateCreated;
 
-    //private List<Routine> subroutines;
+    @OneToMany(mappedBy = "routine", fetch = FetchType.EAGER)
+    private Set<Task> tasks = new HashSet<>();
 
-    //private List<Task> tasks;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    private User user;
 
     @Column(name = "isDeleted", nullable = false)
     private boolean isDeleted;
@@ -41,32 +42,24 @@ public class Routine {
 
     }
 
-    public Routine(String name, String description, Time startDate, Time endDate, Date date) {
-        setName(name);
-        setDescription(description);
-        setStartDate(startDate);
-        setEndDate(endDate);
-        setDate(date);
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Routine(String name, String description) {
-        setName(name);
-        setDescription(description);
-        // check if id already exists, if so run genId() as long as needed
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
-    public Routine(String name, String description, Time startDate, Time endDate, Date date, String id,
-                   HashMap<String, Routine> subroutines, HashMap<String, Task> tasks) {
-        setName(name);
-        setDescription(description);
-        setStartDate(startDate);
-        setEndDate(endDate);
-        setDate(date);
-        /*
-        How we do we load these?
-        this.subroutines = subroutines;
-        this.tasks = tasks;
-        */
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getName() {
@@ -85,7 +78,7 @@ public class Routine {
         this.description = description;
     }
 
-    public Time getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
@@ -93,7 +86,7 @@ public class Routine {
         this.startDate = startDate;
     }
 
-    public Time getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
@@ -101,20 +94,16 @@ public class Routine {
         this.endDate = endDate;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getDateCreated() {
+        return dateCreated;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDateCreated(Date date) {
+        this.dateCreated = date;
     }
 
-    public long getId() {
+    public Long getId() {
         return this.id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     /*public List<Routine> getSubroutines() {
@@ -147,7 +136,7 @@ public class Routine {
                 ", description='" + description + '\'' +
                 ", start=" + startDate +
                 ", end=" + endDate +
-                ", date=" + date +
+                ", dateCreated=" + dateCreated +
                 ", id='" + id + '\'' +
                 ", subroutines=");
                 this.printSubroutines();
