@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Set;
 
 @Controller
@@ -237,5 +238,33 @@ public class TemplateController {
         templateRepository.save(targetTemplate);
 
         return new ModelAndView("redirect:/templates/edit?templateID=" + templateID);
+    }
+
+    @GetMapping("/activateTemplate")
+    public ModelAndView activateTemplateItems(long templateID) {
+        // Finds the user calling the method
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Queries the user from the database
+        User user = userRepository.findByUserName(currentPrincipalName);
+
+        ItemTemplate targetTemplate = templateRepository.getItemTemplateByID(templateID);
+
+        if (targetTemplate == null || !targetTemplate.getUser().equals(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        LinkedList<Task> tasksToActivate = targetTemplate.getActivatableTasks(user);
+        LinkedList<Event> eventsToActivate = targetTemplate.getActivatableEvents();
+        LinkedList<Routine> routinesToActivate = targetTemplate.getActivatableRoutines();
+        LinkedList<Reminder> remindersToActivate = targetTemplate.getActivatableReminders();
+
+        taskRepository.saveAll(tasksToActivate);
+        eventRepository.saveAll(eventsToActivate);
+        routineRepository.saveAll(routinesToActivate);
+        reminderRepository.saveAll(remindersToActivate);
+
+        return new ModelAndView("redirect:/home");
     }
 }
