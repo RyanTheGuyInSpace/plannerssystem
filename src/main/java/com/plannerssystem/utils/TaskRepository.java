@@ -17,4 +17,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
 	@Query("SELECT t FROM Task t WHERE id = ?1")
 	public Task getTaskByID(long id);
+
+	@Query("SELECT t FROM Task t WHERE (startDate <= #{task.endDate} AND #{task.startDate} <= endDate")
+	public Set<Task> getTasksWithOverlappingDate(Task task);
 }

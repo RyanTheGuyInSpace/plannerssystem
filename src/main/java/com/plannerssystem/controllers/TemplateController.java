@@ -238,4 +238,23 @@ public class TemplateController {
 
         return new ModelAndView("redirect:/templates/edit?templateID=" + templateID);
     }
+
+    @GetMapping("/activateTemplate")
+    public ModelAndView activateTemplateItems(long templateID) {
+        // Finds the user calling the method
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Queries the user from the database
+        User user = userRepository.findByUserName(currentPrincipalName);
+
+        ItemTemplate targetTemplate = templateRepository.getItemTemplateByID(templateID);
+
+        if (targetTemplate == null || !targetTemplate.getUser().equals(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        
+
+    }
 }
