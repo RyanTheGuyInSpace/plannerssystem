@@ -240,6 +240,28 @@ public class TemplateController {
         return new ModelAndView("redirect:/templates/edit?templateID=" + templateID);
     }
 
+    @GetMapping("/delete")
+    public ModelAndView deleteTemplate(long templateID) {
+        // Finds the user calling the method
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Queries the user from the database
+        User user = userRepository.findByUserName(currentPrincipalName);
+
+        ItemTemplate targetTemplate = templateRepository.getItemTemplateByID(templateID);
+
+        if (targetTemplate == null || !targetTemplate.getUser().equals(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        targetTemplate.setDeleted(true);
+
+        templateRepository.save(targetTemplate);
+
+        return new ModelAndView("redirect:/templates");
+    }
+
     @GetMapping("/activateTemplate")
     public ModelAndView activateTemplateItems(long templateID) {
         // Finds the user calling the method

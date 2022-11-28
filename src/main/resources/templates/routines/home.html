@@ -31,7 +31,7 @@
             <td th:text="${routine.description}"></td>
             <td th:text="${routine.getTasks().size()}">
             <td>
-              <a class="btn btn-link" th:href="@{/routines/edit(routineID=${routine.id})}"><i class="material-icons">edit</i></a>
+              <a class="btn btn-primary" th:href="@{/routines/edit(routineID=${routine.id})}"><i class="material-icons">edit</i></a>
               <a class="btn btn-danger" th:href="@{/routines/delete(routineID=${routine.id})}"><i class="material-icons">delete</i></a>
             <a class="btn btn-link" th:onclick="'javascript:loadAddRoutineToTemplateModal(' + ${routine.id} + ')'" data-toggle="tooltip" data-placement="top" title="Add to Template"><i class="material-icons">exit_to_app</i></a>
             </td>

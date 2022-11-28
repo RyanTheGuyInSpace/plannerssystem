@@ -144,4 +144,26 @@ public class ReminderController {
 
         return "reminders/addReminderToTemplateModal";
     }
+
+    @GetMapping("/delete")
+    public ModelAndView deleteReminder(long reminderID) {
+        // Finds the user calling the method
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Queries the user from the database
+        User user = userRepository.findByUserName(currentPrincipalName);
+
+        Reminder targetReminder = reminderRepository.getReminderByID(reminderID);
+
+        if (targetReminder == null || !targetReminder.getUser().equals(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        targetReminder.setDeleted(true);
+
+        reminderRepository.save(targetReminder);
+
+        return new ModelAndView("redirect:/reminders");
+    }
 }
