@@ -21,6 +21,8 @@
                 <tr>
                     <th scope="col">Title</th>
                     <th scope="col">Description</th>
+                    <th scope="col">Start Date</th>
+                    <th scope="col">End Date</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
@@ -28,6 +30,10 @@
                 <tr th:each="reminder : ${reminders}">
                     <td th:text="${reminder.name}"></td>
                     <td th:text="${reminder.description}"></td>
+                    <td th:if="${reminder.startDate}" th:text="${dateFormatter.format(routine.startDate)}"></td>
+                    <td th:unless="${reminder.startDate}"></td>
+                    <td th:if="${reminder.endDate}" th:text="${dateFormatter.format(routine.endDate)}"></td>
+                    <td th:unless="${reminder.endDate}"></td>
                     <td>
                         <a class="btn btn-primary" th:onclick="'javascript:loadEditReminderModal(' + ${reminder.id} + ')'"><i class="material-icons">edit</i></a>
                         <a class="btn btn-danger" th:href="@{/reminders/delete(reminderID=${reminder.id})}"><i class="material-icons">delete</i></a>

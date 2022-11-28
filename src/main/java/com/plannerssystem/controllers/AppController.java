@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Controller
@@ -63,10 +64,14 @@ public class AppController {
         // Queries the user from the database
         User user = userRepository.findByUserName(currentPrincipalName);
 
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy");
+
         model.addAttribute("tasks", taskRepository.getTasksByUser(user));
         model.addAttribute("events", eventRepository.getEventsByUser(user));
         model.addAttribute("routines", routineRepository.getRoutinesByUser(user));
         model.addAttribute("reminders", reminderRepository.getRemindersByUser(user));
+
+        model.addAttribute("dateFormatter", dateFormatter);
 
         return "home";
     }

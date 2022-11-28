@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
 
@@ -50,9 +51,13 @@ public class ReminderController {
 
         Set<Reminder> userReminders = reminderRepository.getRemindersByUser(user);
 
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy");
+
         model.addAttribute("user", user);
         model.addAttribute("reminders", userReminders);
         model.addAttribute("numReminders", userReminders.size());
+
+        model.addAttribute("dateFormatter", dateFormatter);
 
         return "reminders/home";
     }

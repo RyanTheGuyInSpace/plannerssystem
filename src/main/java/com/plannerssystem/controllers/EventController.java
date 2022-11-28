@@ -1,9 +1,7 @@
 package com.plannerssystem.controllers;
 
+import com.plannerssystem.models.*;
 import com.plannerssystem.models.Event;
-import com.plannerssystem.models.Event;
-import com.plannerssystem.models.Routine;
-import com.plannerssystem.models.User;
 import com.plannerssystem.utils.*;
 import com.plannerssystem.utils.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +81,52 @@ public class EventController {
         return new ModelAndView("redirect:/events");
     }
 
+    @GetMapping("/edit")
+    public String editEventModal(long eventID, Model model) {
+        // Finds the user calling the method
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Queries the user from the database
+        User user = userRepository.findByUserName(currentPrincipalName);
+
+        Event eventToEdit = eventRepository.getEventByID(eventID);
+
+        // Make sure the user is completing one of their own Events
+        if (!eventToEdit.getUser().equals(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        model.addAttribute("event", eventToEdit);
+
+        return "events/editEventModal";
+    }
+
+    @PostMapping("/edit")
+    public ModelAndView editEvent(@ModelAttribute("event") Event event, long eventID) {
+        // Finds the user calling the method
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Queries the user from the database
+        User user = userRepository.findByUserName(currentPrincipalName);
+
+        Event eventToEdit = eventRepository.getEventByID(eventID);
+
+        if (eventToEdit == null || !eventToEdit.getUser().equals(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        eventToEdit.setName(event.getName());
+        eventToEdit.setDescription(event.getDescription());
+        eventToEdit.setStartDate(event.getStartDate());
+        eventToEdit.setEndDate(event.getEndDate());
+
+        eventRepository.save(eventToEdit);
+
+        return new ModelAndView("redirect:/events");
+    }
+    
     @GetMapping("/delete")
     public ModelAndView deleteEvent(long eventID) throws ResponseStatusException {
         // Finds the user calling the method

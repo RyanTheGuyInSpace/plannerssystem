@@ -33,6 +33,7 @@
           <td th:text="${event.startDate} ?: ''"></td>
           <td th:text="${event.endDate} ?: ''"></td>
           <td>
+            <button type="button" class="btn btn-info" th:onclick="'javascript:loadEditEventModal(' + ${event.id} + ')'" data-toggle="tooltip" data-placement="top" title="Edit"><i class="material-icons">edit</i></button>
             <a class="btn btn-danger" th:href="@{/events/delete(eventID=${event.id})}"><i class="material-icons">delete</i></a>
             <a class="btn btn-link" th:onclick="'javascript:loadAddEventToTemplateModal(' + ${event.id} + ')'" data-toggle="tooltip" data-placement="top" title="Add to Template"><i class="material-icons">exit_to_app</i></a>
           </td>
@@ -58,6 +59,14 @@
 
             $('#modal').load(url, function () {
                 $('#createEventModal').modal('show');
+            })
+        }
+
+        function loadEditEventModal(id) {
+            var url = "/events/edit?eventID=" + id;
+
+            $('#modal').load(url, function () {
+                $('#editEventModal').modal('show');
             })
         }
         
