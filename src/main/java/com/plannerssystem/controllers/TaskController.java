@@ -2,6 +2,8 @@ package com.plannerssystem.controllers;
 
 import com.plannerssystem.models.Task;
 import com.plannerssystem.models.User;
+import com.plannerssystem.utils.ItemTemplateItemRepository;
+import com.plannerssystem.utils.ItemTemplateRepository;
 import com.plannerssystem.utils.TaskRepository;
 import com.plannerssystem.utils.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,12 @@ public class TaskController {
 
     @Autowired
     private TaskRepository taskRepository;
+
+    @Autowired
+    private ItemTemplateRepository itemTemplateRepository;
+
+    @Autowired
+    private ItemTemplateItemRepository templateItemRepository;
 
     @GetMapping("")
     public String tasksHome(Model model) {
@@ -160,5 +168,26 @@ public class TaskController {
         taskRepository.save(taskToEdit);
 
         return new ModelAndView("redirect:/tasks");
+    }
+
+    @GetMapping("/addTaskToTemplate")
+    public String addToTemplateModal(long taskID, Model model) {
+        // Finds the user calling the method
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Queries the user from the database
+        User user = userRepository.findByUserName(currentPrincipalName);
+
+        Task taskToAddToTemplate = taskRepository.getTaskByID(taskID);
+
+        if (taskToAddToTemplate == null || !taskToAddToTemplate.getUser().equals(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        model.addAttribute("task", taskToAddToTemplate);
+        model.addAttribute("templates", itemTemplateRepository.getItemTemplatesByUser(user));
+
+        return "tasks/addTaskToTemplateModal";
     }
 }

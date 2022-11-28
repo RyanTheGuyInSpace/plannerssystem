@@ -31,6 +31,7 @@
                     <td>
                         <a class="btn btn-link" th:href="@{/reminders/edit(reminderID=${reminder.id})}"><i class="material-icons">edit</i></a>
                         <a class="btn btn-danger" th:href="@{/reminders/delete(reminderID=${reminder.id})}"><i class="material-icons">delete</i></a>
+                        <a class="btn btn-link" th:onclick="'javascript:loadAddReminderToTemplateModal(' + ${reminder.id} + ')'" data-toggle="tooltip" data-placement="top" title="Add to Template"><i class="material-icons">exit_to_app</i></a>
                     </td>
                 </tr>
                 </tbody>
@@ -54,6 +55,14 @@
 
             $('#modal').load(url, function () {
                 $('#createReminderModal').modal('show');
+            })
+        }
+        
+        function loadAddReminderToTemplateModal(id) {
+            var url = "/reminders/addReminderToTemplate?reminderID=" + id;
+
+            $('#modal').load(url, function () {
+                $('#addReminderToTemplateModal').modal('show');
             })
         }
     </script>

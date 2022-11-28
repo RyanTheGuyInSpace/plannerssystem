@@ -1,6 +1,7 @@
 package com.plannerssystem.controllers;
 
 import com.plannerssystem.models.Reminder;
+import com.plannerssystem.models.Routine;
 import com.plannerssystem.models.User;
 import com.plannerssystem.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,12 @@ public class ReminderController {
 
     @Autowired
     private ReminderRepository reminderRepository;
+
+    @Autowired
+    private ItemTemplateRepository itemTemplateRepository;
+
+    @Autowired
+    private ItemTemplateItemRepository templateItemRepository;
 
     @GetMapping("")
     public String remindersHome(Model model) {
@@ -115,5 +122,26 @@ public class ReminderController {
         reminderRepository.save(targetReminder);
 
         return new ModelAndView("redirect:/reminders/edit?reminderID=" + reminderID);
+    }
+
+    @GetMapping("/addReminderToTemplate")
+    public String addToTemplateModal(long reminderID, Model model) {
+        // Finds the user calling the method
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Queries the user from the database
+        User user = userRepository.findByUserName(currentPrincipalName);
+
+        Reminder reminderToAddToTemplate = reminderRepository.getReminderByID(reminderID);
+
+        if (reminderToAddToTemplate == null || !reminderToAddToTemplate.getUser().equals(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        model.addAttribute("reminder", reminderToAddToTemplate);
+        model.addAttribute("templates", itemTemplateRepository.getItemTemplatesByUser(user));
+
+        return "reminders/addReminderToTemplateModal";
     }
 }

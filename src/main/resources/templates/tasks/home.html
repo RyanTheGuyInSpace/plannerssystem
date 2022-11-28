@@ -29,9 +29,10 @@
                                 <td th:text="${task.name}"></td>
                                 <td th:text="${task.description}"></td>
                                 <td>
-                                    <button type="button" class="btn btn-info" th:onclick="'javascript:loadEditTaskModal(' + ${task.id} + ')'"><i class="material-icons">edit</i></button>
-                                    <a class="btn btn-primary" th:href="@{/tasks/complete(taskID=${task.id})}"><i class="material-icons">check</i></a>
-                                    <a class="btn btn-danger" th:href="@{/tasks/delete(taskID=${task.id})}"><i class="material-icons">delete</i></a>
+                                    <a class="btn btn-primary" th:href="@{/tasks/complete(taskID=${task.id})}" data-toggle="tooltip" data-placement="top" title="Complete"><i class="material-icons">check</i></a>
+                                    <button type="button" class="btn btn-info" th:onclick="'javascript:loadEditTaskModal(' + ${task.id} + ')'" data-toggle="tooltip" data-placement="top" title="Edit"><i class="material-icons">edit</i></button>
+                                    <a class="btn btn-danger" th:href="@{/tasks/delete(taskID=${task.id})}" data-toggle="tooltip" data-placement="top" title="Delete"><i class="material-icons">delete</i></a>
+                                    <a class="btn btn-link" th:onclick="'javascript:loadAddTaskToTemplateModal(' + ${task.id} + ')'" data-toggle="tooltip" data-placement="top" title="Add to Template"><i class="material-icons">exit_to_app</i></a>
                                 </td>
                             </tr>
                         </tbody>
@@ -50,6 +51,10 @@
     </body>
 
     <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        })
+
         function loadCreateTaskModal() {
             var url = "/tasks/create";
 
@@ -63,6 +68,14 @@
 
             $('#modal').load(url, function () {
                 $('#editTaskModal').modal('show');
+            })
+        }
+
+        function loadAddTaskToTemplateModal(id) {
+            var url = "/tasks/addTaskToTemplate?taskID=" + id;
+
+            $('#modal').load(url, function () {
+                $('#addTaskToTemplateModal').modal('show');
             })
         }
     </script>

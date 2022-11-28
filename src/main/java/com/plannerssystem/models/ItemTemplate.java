@@ -1,14 +1,14 @@
 package com.plannerssystem.models;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "Reminders")
-public class Reminder implements Serializable {
+@Table(name = "ItemTemplates")
+public class ItemTemplate {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,23 +19,18 @@ public class Reminder implements Serializable {
     @Column(name = "description", nullable = false, length = 2048)
     private String description;
 
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
-    @Column(name = "startDate", nullable = true)
-    private Date startDate;
-
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
-    @Column(name = "endDate", nullable = true)
-    private Date endDate;
-
-    @Column(name = "isDeleted", nullable = false)
-    private boolean isDeleted;
-
-    @Column(name = "dateCreated", nullable = false)
+    @Column(name = "dateCreated", nullable = false, length = 100)
     private Date dateCreated;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
+
+    @Column(name = "isDeleted", nullable = false)
+    private boolean isDeleted;
+
+    @OneToMany(mappedBy = "itemTemplate", fetch = FetchType.EAGER)
+    public Set<ItemTemplateItem> templateItems;
 
     public Long getId() {
         return id;
@@ -61,30 +56,6 @@ public class Reminder implements Serializable {
         this.description = description;
     }
 
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
-
     public Date getDateCreated() {
         return dateCreated;
     }
@@ -101,12 +72,19 @@ public class Reminder implements Serializable {
         this.user = user;
     }
 
-    public ItemTemplateItem createItemTemplateItem() {
-        ItemTemplateItem templateItem = new ItemTemplateItem();
+    public boolean isDeleted() {
+        return isDeleted;
+    }
 
-        templateItem.setReminder(this);
-        templateItem.setUser(this.getUser());
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
 
-        return templateItem;
+    public Set<ItemTemplateItem> getTemplateItems() {
+        return templateItems;
+    }
+
+    public void setTemplateItems(Set<ItemTemplateItem> templateItems) {
+        this.templateItems = templateItems;
     }
 }
