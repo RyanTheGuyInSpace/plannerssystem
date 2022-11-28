@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Template</title>
+</head>
+<body>
+<div th:replace="fragments :: scripts"></div>
+<div th:replace="fragments :: navbar"></div>
+
+<div class="container">
+  <div class="card mb-3">
+    <div class="card-header d-flex align-items-center justify-content-between">
+      <h3>Edit Item Template</h3>
+      <a class="btn btn-outline-secondary" th:href="@{/templates}">Back</a>
+    </div>
+
+    <div class="card-body">
+
+      <form action="#" th:action="@{/templates/edit(templateID=${template.id})}" th:object="${template}" method="post" id="editTemplateForm">
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <label for="name">Title</label>
+            <input class="form-control" id="name" type="text" th:field="*{name}" maxlength="100" autocomplete="off" required />
+          </div>
+
+          <div class="form-group col-md-12">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" th:field="*{description}" rows="3" maxlength="2048">
+
+            </textarea>
+          </div>
+        </div>
+      </form>
+
+      <div>
+        <button type="submit" form="editTemplateForm" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header d-flex align-items-center justify-content-between">
+      <h3>Tasks</h3>
+      <div>
+        <button class="btn btn-primary mr-2" type="button" th:onclick="'javascript:loadAddTaskToTemplateModal(' + ${template.id} + ')'">Add Existing</button>
+        <button class="btn btn-primary" type="button" th:onclick="'javascript:loadAddNewTaskToTemplateModal(' + ${template.id} + ')'">Add New</button>
+      </div>
+
+    </div>
+
+    <div class="card-body">
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th scope="col">Title</th>
+          <th scope="col">Description</th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="task : ${templateTasks}">
+          <td th:text="${task.name}"></td>
+          <td th:text="${task.description}"></td>
+          <td>
+            <a class="btn btn-danger" th:href="@{/templates/removeTask(templateID=${template.id})(taskID=${task.id})}"><i class="material-icons">delete</i></a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between">
+      <h3>Subtemplates</h3>
+      <div>
+        <button class="btn btn-primary mr-2" type="button" th:onclick="'javascript:loadAddSubtemplateToTemplateModal(' + ${template.id} + ')'">Add</button>
+      </div>
+
+    </div>
+
+    <div class="card-body">
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th scope="col">Title</th>
+          <th scope="col">Description</th>
+          <th scope="col">Tasks</th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="subtemplate : ${subtemplates}">
+          <td th:text="${subtemplate.name}"></td>
+          <td th:text="${subtemplate.description}"></td>
+          <td th:text="${subtemplate.getTasks().size()}">
+          <td>
+            <a class="btn btn-danger" th:href="@{/templates/removeSubtemplateFromTemplate(templateID=${template.id}, subtemplateID=${subtemplate.id})}"><i class="material-icons">delete</i></a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="modal">
+
+</div>
+</body>
+
+<script>
+        function loadAddTaskToTemplateModal(id) {
+            var url = "/templates/addTaskToTemplate?templateID=" + id;
+
+            $('#modal').load(url, function () {
+                $('#addTaskToTemplateModal').modal('show');
+            })
+        }
+
+        function loadAddNewTaskToTemplateModal(id) {
+            var url = "/templates/addNewTaskToTemplate?templateID=" + id;
+
+            $('#modal').load(url, function () {
+                $('#addNewTaskToTemplateModal').modal('show');
+            })
+        }
+
+        function loadAddSubtemplateToTemplateModal(id) {
+            var url = "/templates/addSubtemplateToTemplate?templateID=" + id;
+
+            $('#modal').load(url, function () {
+                $('#addSubtemplateToTemplateModal').modal('show');
+            })
+        }
+    </script>
+</html>
+

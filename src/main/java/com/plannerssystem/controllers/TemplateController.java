@@ -195,4 +195,47 @@ public class TemplateController {
 
         return new ModelAndView("redirect:/templates/edit?templateID=" + targetTemplate.getId());
     }
+
+    @GetMapping("/edit")
+    public String editTemplate(long templateID, Model model) {
+        // Finds the user calling the method
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Queries the user from the database
+        User user = userRepository.findByUserName(currentPrincipalName);
+
+        ItemTemplate targetTemplate = itemTemplateRepository.getItemTemplateByID(templateID);
+
+        if (targetTemplate == null || !targetTemplate.getUser().equals(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        model.addAttribute("template", targetTemplate);
+
+        return "templates/edit";
+    }
+
+    @PostMapping("/edit")
+    public ModelAndView editTemplate(long templateID, ItemTemplate template, Model model) {
+        // Finds the user calling the method
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Queries the user from the database
+        User user = userRepository.findByUserName(currentPrincipalName);
+
+        ItemTemplate targetTemplate = templateRepository.getItemTemplateByID(templateID);
+
+        if (targetTemplate == null || !targetTemplate.getUser().equals(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        targetTemplate.setName(template.getName());
+        targetTemplate.setDescription(template.getDescription());
+
+        templateRepository.save(targetTemplate);
+
+        return new ModelAndView("redirect:/templates/edit?templateID=" + templateID);
+    }
 }
