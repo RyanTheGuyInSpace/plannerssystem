@@ -2,13 +2,28 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="ISO-8859-1">
-  <title>Registration Success</title>
-  <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+  <title>Successfully Registered</title>
+  <div th:replace="fragments :: scripts"></div>
 </head>
-<body>
-<div class="container text-center">
-  <h3>You have signed up successfully!</h3>
-  <h4><a th:href="@{/login}">Click here to Login</a></h4>
+<body style="background-color: #CCFFCC;">
+<div class="container-fluid text-center">
+
+  <div class="jumbotron jumbotron-fluid mt-5" style="background-color: rgb(246, 244, 241)">
+    <div class="container-fluid">
+      <div class="text-center">
+        <img th:src="@{/logo.png}">
+      </div>
+
+      <h1 class="display-4">Registration Success</h1>
+      <p class="lead">Thank you for registering! You may now login and take control of your daily schedule.</p>
+      <hr class="my-4">
+
+      <p class="lead">
+        <a class="btn btn-success" th:href="@{/login}">Login</a>
+      </p>
+    </div>
+
+  </div>
 </div>
 
 </body>

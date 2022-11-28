@@ -1,17 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="ISO-8859-1">
-  <title>Welcome to CodeJava Home Demo for the boys</title>
-  <div th:replace="fragments :: scripts"></div>
-</head>
-<body>
-<div class="container text-center">
-  <h1>Welcome to Planners!</h1>
-  <h3><a th:href="@{/users}">List of Users</a></h3>
-  <h3><a th:href="@{/register}">Register</a></h3>
-  <h3><a th:href="@{/login}">Login</a></h3>
-</div>
+  <head>
+    <meta charset="ISO-8859-1">
+    <title>Planners System</title>
+    <div th:replace="fragments :: scripts"></div>
+  </head>
+  <body style="background-color: #CCFFCC;">
+    <div class="container-fluid text-center">
 
-</body>
+      <div class="jumbotron jumbotron-fluid mt-5" style="background-color: rgb(246, 244, 241)">
+        <div class="container-fluid">
+          <div class="text-center">
+            <img th:src="@{/logo.png}">
+          </div>
+
+          <h1 class="display-4">Welcome to the Planners System</h1>
+          <p class="lead">A simple and straight-to-the-point way to keep organized so you can focus on making the most of each day.</p>
+
+          <hr class="my-4">
+
+          <p class="lead">
+            <a class="btn btn-primary" th:href="@{/register}">Register</a>
+            <a class="btn btn-success" th:href="@{/login}">Login</a>
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+  </body>
 </html>
