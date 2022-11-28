@@ -130,6 +130,28 @@ public class RoutineController {
         return new ModelAndView("redirect:/routines/edit?routineID=" + routineID);
     }
 
+    @GetMapping("/delete")
+    public ModelAndView deleteRoutine(long routineID) {
+        // Finds the user calling the method
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Queries the user from the database
+        User user = userRepository.findByUserName(currentPrincipalName);
+
+        Routine targetRoutine = routineRepository.getRoutineByID(routineID);
+
+        if (targetRoutine == null || !targetRoutine.getUser().equals(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        targetRoutine.setDeleted(true);
+
+        routineRepository.save(targetRoutine);
+
+        return new ModelAndView("redirect:/routines");
+    }
+
     @GetMapping("/addTaskToRoutine")
     public String addTaskToRoutineModal(long routineID, Model model) {
         // Finds the user calling the method
