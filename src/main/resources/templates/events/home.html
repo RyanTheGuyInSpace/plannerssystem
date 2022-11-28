@@ -21,6 +21,8 @@
         <tr>
           <th scope="col">Title</th>
           <th scope="col">Description</th>
+          <th scope="col">Start Date</th>
+          <th scope="col">End Date</th>
           <th scope="col"></th>
         </tr>
         </thead>
@@ -28,6 +30,8 @@
         <tr th:each="event : ${events}">
           <td th:text="${event.name}"></td>
           <td th:text="${event.description}"></td>
+          <td th:text="${event.startDate} ?: ''"></td>
+          <td th:text="${event.endDate} ?: ''"></td>
           <td>
             <a class="btn btn-danger" th:href="@{/events/delete(eventID=${event.id})}"><i class="material-icons">delete</i></a>
             <a class="btn btn-link" th:onclick="'javascript:loadAddEventToTemplateModal(' + ${event.id} + ')'" data-toggle="tooltip" data-placement="top" title="Add to Template"><i class="material-icons">exit_to_app</i></a>

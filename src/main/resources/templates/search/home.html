@@ -11,16 +11,24 @@
 <div class="container-fluid">
     <div class="card">
         <div class="card-header d-flex align-items-center justify-content-between">
-            <h3>Search</h3>
+            <h1 class="display-4">Search</h1>
         </div>
         <div class="card-body">
             <form id="searchForm" th:action="@{/search}" method="post">
-                <input id="keyword" name="keyword" class="form-control" type="text"/>
-            </form>
-            <button form="searchForm" type="submit" class="btn btn-primary">search</button>
+                <div class="form-row d-flex align-items-center">
+                    <div class="form-group col-md-11">
+                        <input id="keyword" name="keyword" class="form-control" type="text" placeholder="Search by item name or description"/>
+                    </div>
 
-            <table class="table table-striped table-bordered">
-                <thead class="thead-dark">
+                    <div class="form-group col-md-1">
+                        <button form="searchForm" type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+            </form>
+
+            <h3>Tasks</h3>
+            <table class="table table-striped table-bordered mb-3">
+                <thead class="thead-light">
                 <tr>
                     <th>Name</th>
                     <th>Description</th>
@@ -33,8 +41,10 @@
                 </tr>
                 </tbody>
             </table>
-            <table class="table table-striped table-bordered">
-                <thead class="thead-dark">
+
+            <h3>Events</h3>
+            <table class="table table-striped table-bordered mb-3">
+                <thead class="thead-light">
                 <tr>
                     <th>Name</th>
                     <th>Description</th>
@@ -47,8 +57,10 @@
                 </tr>
                 </tbody>
             </table>
-            <table class="table table-striped table-bordered">
-                <thead class="thead-dark">
+
+            <h3>Routines</h3>
+            <table class="table table-striped table-bordered mb-3">
+                <thead class="thead-light">
                 <tr>
                     <th>Name</th>
                     <th>Description</th>
@@ -61,8 +73,10 @@
                 </tr>
                 </tbody>
             </table>
-            <table class="table table-striped table-bordered">
-                <thead class="thead-dark">
+
+            <h3>Reminders</h3>
+            <table class="table table-striped table-bordered mb-3">
+                <thead class="thead-light">
                 <tr>
                     <th>Name</th>
                     <th>Description</th>
@@ -75,8 +89,6 @@
                 </tr>
                 </tbody>
             </table>
-        </div>
-        <div class="card-footer">
         </div>
     </div>
 </div>
