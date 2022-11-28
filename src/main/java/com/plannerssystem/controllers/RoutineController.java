@@ -4,10 +4,7 @@ import com.plannerssystem.models.Event;
 import com.plannerssystem.models.Routine;
 import com.plannerssystem.models.Task;
 import com.plannerssystem.models.User;
-import com.plannerssystem.utils.EventRepository;
-import com.plannerssystem.utils.RoutineRepository;
-import com.plannerssystem.utils.TaskRepository;
-import com.plannerssystem.utils.UserRepository;
+import com.plannerssystem.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -39,6 +36,12 @@ public class RoutineController {
 
     @Autowired
     private RoutineRepository routineRepository;
+
+    @Autowired
+    private ItemTemplateRepository itemTemplateRepository;
+
+    @Autowired
+    private ItemTemplateItemRepository templateItemRepository;
 
     @GetMapping("")
     public String routinesHome(Model model) {
@@ -311,5 +314,26 @@ public class RoutineController {
         routineRepository.save(targetSubroutine);
 
         return new ModelAndView("redirect:/routines/edit?routineID=" + routineID);
+    }
+
+    @GetMapping("/addRoutineToTemplate")
+    public String addToTemplateModal(long routineID, Model model) {
+        // Finds the user calling the method
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Queries the user from the database
+        User user = userRepository.findByUserName(currentPrincipalName);
+
+        Routine routineToAddToTemplate = routineRepository.getRoutineByID(routineID);
+
+        if (routineToAddToTemplate == null || !routineToAddToTemplate.getUser().equals(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        model.addAttribute("routine", routineToAddToTemplate);
+        model.addAttribute("templates", itemTemplateRepository.getItemTemplatesByUser(user));
+
+        return "routines/addRoutineToTemplateModal";
     }
 }

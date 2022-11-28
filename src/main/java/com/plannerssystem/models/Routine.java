@@ -180,4 +180,13 @@ public class Routine implements Serializable {
 
         return newTasks;
     }
+
+    public ItemTemplateItem createItemTemplateItem() {
+        ItemTemplateItem templateItem = new ItemTemplateItem();
+
+        templateItem.setRoutine(this);
+        templateItem.setUser(this.getUser());
+
+        return templateItem;
+    }
 }

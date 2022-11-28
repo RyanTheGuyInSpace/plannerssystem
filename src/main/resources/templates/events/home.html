@@ -26,10 +26,11 @@
         </thead>
         <tbody>
         <tr th:each="event : ${events}">
-          <td class="text-center" th:text="${event.name}"></td>
-          <td class="text-center" th:text="${event.description}"></td>
+          <td th:text="${event.name}"></td>
+          <td th:text="${event.description}"></td>
           <td>
             <a class="btn btn-danger" th:href="@{/events/delete(eventID=${event.id})}"><i class="material-icons">delete</i></a>
+            <a class="btn btn-link" th:onclick="'javascript:loadAddEventToTemplateModal(' + ${event.id} + ')'" data-toggle="tooltip" data-placement="top" title="Add to Template"><i class="material-icons">exit_to_app</i></a>
           </td>
         </tr>
         </tbody>
@@ -53,6 +54,14 @@
 
             $('#modal').load(url, function () {
                 $('#createEventModal').modal('show');
+            })
+        }
+        
+        function loadAddEventToTemplateModal(id) {
+            var url = "/events/addEventToTemplate?eventID=" + id;
+
+            $('#modal').load(url, function () {
+                $('#addEventToTemplateModal').modal('show');
             })
         }
     </script>

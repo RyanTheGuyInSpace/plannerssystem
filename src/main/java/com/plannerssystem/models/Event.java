@@ -127,4 +127,13 @@ public class Event implements Serializable {
     public void delete() {
         this.setDeleted(true);
     }
+
+    public ItemTemplateItem createItemTemplateItem() {
+        ItemTemplateItem templateItem = new ItemTemplateItem();
+
+        templateItem.setEvent(this);
+        templateItem.setUser(this.getUser());
+
+        return templateItem;
+    }
 }

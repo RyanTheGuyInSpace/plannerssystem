@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "Tasks")
@@ -167,5 +168,14 @@ public class Task implements Serializable {
 
     public void delete() {
         this.setDeleted(true);
+    }
+
+    public ItemTemplateItem createItemTemplateItem() {
+        ItemTemplateItem templateItem = new ItemTemplateItem();
+
+        templateItem.setTask(this);
+        templateItem.setUser(this.getUser());
+
+        return templateItem;
     }
 }

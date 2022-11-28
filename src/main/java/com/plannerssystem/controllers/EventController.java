@@ -2,11 +2,10 @@ package com.plannerssystem.controllers;
 
 import com.plannerssystem.models.Event;
 import com.plannerssystem.models.Event;
+import com.plannerssystem.models.Routine;
 import com.plannerssystem.models.User;
+import com.plannerssystem.utils.*;
 import com.plannerssystem.utils.EventRepository;
-import com.plannerssystem.utils.EventRepository;
-import com.plannerssystem.utils.TaskRepository;
-import com.plannerssystem.utils.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -34,6 +33,12 @@ public class EventController {
 
     @Autowired
     private EventRepository eventRepository;
+
+    @Autowired
+    private ItemTemplateRepository itemTemplateRepository;
+
+    @Autowired
+    private ItemTemplateItemRepository templateItemRepository;
 
     public EventController() {
     }
@@ -99,5 +104,26 @@ public class EventController {
         eventRepository.save(eventToComplete);
 
         return new ModelAndView("redirect:/events");
+    }
+
+    @GetMapping("/addEventToTemplate")
+    public String addToTemplateModal(long eventID, Model model) {
+        // Finds the user calling the method
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Queries the user from the database
+        User user = userRepository.findByUserName(currentPrincipalName);
+
+        Event eventToAddToTemplate = eventRepository.getEventByID(eventID);
+
+        if (eventToAddToTemplate == null || !eventToAddToTemplate.getUser().equals(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        model.addAttribute("event", eventToAddToTemplate);
+        model.addAttribute("templates", itemTemplateRepository.getItemTemplatesByUser(user));
+
+        return "events/addEventToTemplateModal";
     }
 }
