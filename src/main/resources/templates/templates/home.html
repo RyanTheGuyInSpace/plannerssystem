@@ -31,7 +31,8 @@
                     <td th:text="${template.description}"></td>
                     <td th:text="${template.getTemplateItems().size()}"></td>
                     <td>
-                        <button type="button" class="btn btn-info" th:onclick="'javascript:loadEditTemplateModal(' + ${template.id} + ')'"><i class="material-icons">edit</i></button>
+                        <a class="btn btn-success" th:href="@{/templates/activateTemplate(templateID=${template.id})}"><i class="material-icons">arrow_upward</i></a>
+                        <a class="btn btn-primary" th:href="@{/templates/edit(templateID=${template.id})}"><i class="material-icons">edit</i></a>
                         <a class="btn btn-danger" th:href="@{/templates/delete(templateID=${template.id})}"><i class="material-icons">delete</i></a>
                     </td>
                 </tr>

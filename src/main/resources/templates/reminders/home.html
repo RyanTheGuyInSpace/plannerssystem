@@ -29,7 +29,7 @@
                     <td th:text="${reminder.name}"></td>
                     <td th:text="${reminder.description}"></td>
                     <td>
-                        <a class="btn btn-link" th:href="@{/reminders/edit(reminderID=${reminder.id})}"><i class="material-icons">edit</i></a>
+                        <a class="btn btn-primary" th:onclick="'javascript:loadEditReminderModal(' + ${reminder.id} + ')'"><i class="material-icons">edit</i></a>
                         <a class="btn btn-danger" th:href="@{/reminders/delete(reminderID=${reminder.id})}"><i class="material-icons">delete</i></a>
                         <a class="btn btn-link" th:onclick="'javascript:loadAddReminderToTemplateModal(' + ${reminder.id} + ')'" data-toggle="tooltip" data-placement="top" title="Add to Template"><i class="material-icons">exit_to_app</i></a>
                     </td>
@@ -63,6 +63,14 @@
 
             $('#modal').load(url, function () {
                 $('#addReminderToTemplateModal').modal('show');
+            })
+        }
+        
+        function loadEditReminderModal(id) {
+            var url = "/reminders/edit?reminderID=" + id;
+
+            $('#modal').load(url, function () {
+                $('#editReminderModal').modal('show');
             })
         }
     </script>

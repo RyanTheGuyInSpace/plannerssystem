@@ -82,7 +82,7 @@ public class ReminderController {
     }
 
     @GetMapping("/edit")
-    public String editReminder(long reminderID, Model model) {
+    public String editReminderModal(long reminderID, Model model) {
         // Finds the user calling the method
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
@@ -98,7 +98,7 @@ public class ReminderController {
 
         model.addAttribute("reminder", targetReminder);
 
-        return "reminders/edit";
+        return "reminders/editReminderModal";
     }
 
     @PostMapping("/edit")
@@ -121,7 +121,7 @@ public class ReminderController {
 
         reminderRepository.save(targetReminder);
 
-        return new ModelAndView("redirect:/reminders/edit?reminderID=" + reminderID);
+        return new ModelAndView("redirect:/reminders");
     }
 
     @GetMapping("/addReminderToTemplate")
