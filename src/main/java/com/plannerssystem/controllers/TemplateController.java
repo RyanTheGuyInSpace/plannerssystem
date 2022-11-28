@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Set;
 
 @Controller
@@ -254,7 +255,16 @@ public class TemplateController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
-        
+        LinkedList<Task> tasksToActivate = targetTemplate.getActivatableTasks(user);
+        LinkedList<Event> eventsToActivate = targetTemplate.getActivatableEvents();
+        LinkedList<Routine> routinesToActivate = targetTemplate.getActivatableRoutines();
+        LinkedList<Reminder> remindersToActivate = targetTemplate.getActivatableReminders();
 
+        taskRepository.saveAll(tasksToActivate);
+        eventRepository.saveAll(eventsToActivate);
+        routineRepository.saveAll(routinesToActivate);
+        reminderRepository.saveAll(remindersToActivate);
+
+        return new ModelAndView("redirect:/home");
     }
 }
