@@ -66,9 +66,9 @@ public class TaskRepositoryTests {
 
 		Task savedTask = taskRepo.save(task);
 
-		Task requeriedTask = taskRepo.getTaskByID(savedTask.getId());
+		Task requiredTask = taskRepo.getTaskByID(savedTask.getId());
 
-		assertThat(savedTask.getId()).isEqualTo( requeriedTask.getId());
+		assertThat(savedTask.getId()).isEqualTo(requiredTask.getId());
 	}
 
 	@Test
