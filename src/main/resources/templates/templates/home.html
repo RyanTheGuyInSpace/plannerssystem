@@ -12,11 +12,11 @@
     <div class="card">
         <div class="card-header d-flex align-items-center justify-content-between">
             <h1 class="display-4">Item Templates</h1>
-            <button class="btn btn-primary" type="button" onclick="loadCreateTemplateModal()"><i class="material-icons">add</i></button>
+            <button class="btn btn-success" type="button" onclick="loadCreateTemplateModal()" data-toggle="tooltip" data-placement="top" title="Add Template"><i class="material-icons">add</i></button>
         </div>
 
         <div class="card-body">
-            <table class="table table-hover">
+            <table th:if="${templates.size() > 0}" class="table table-hover">
                 <thead>
                 <tr>
                     <th scope="col">Title</th>
@@ -31,17 +31,15 @@
                     <td th:text="${template.description}"></td>
                     <td th:text="${template.getTemplateItems().size()}"></td>
                     <td>
-                        <a class="btn btn-success" th:href="@{/templates/activateTemplate(templateID=${template.id})}"><i class="material-icons">arrow_upward</i></a>
-                        <a class="btn btn-primary" th:href="@{/templates/edit(templateID=${template.id})}"><i class="material-icons">edit</i></a>
-                        <a class="btn btn-danger" th:href="@{/templates/delete(templateID=${template.id})}"><i class="material-icons">delete</i></a>
+                        <a class="btn btn-success" th:href="@{/templates/activateTemplate(templateID=${template.id})}" data-toggle="tooltip" data-placement="top" title="Activate"><i class="material-icons">arrow_upward</i></a>
+                        <a class="btn btn-primary" th:href="@{/templates/edit(templateID=${template.id})}" data-toggle="tooltip" data-placement="top" title="Edit"><i class="material-icons">edit</i></a>
+                        <a class="btn btn-danger" th:href="@{/templates/delete(templateID=${template.id})}" data-toggle="tooltip" data-placement="top" title="Delete"><i class="material-icons">delete</i></a>
                     </td>
                 </tr>
                 </tbody>
             </table>
-        </div>
 
-        <div class="card-footer">
-
+            <p th:unless="${templates.size() > 0}">No available Templates.</p>
         </div>
     </div>
 </div>

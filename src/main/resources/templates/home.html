@@ -21,12 +21,19 @@
                         <tr>
                             <th>Name</th>
                             <th>Description</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr th:each="task: ${tasks}">
                             <td th:text="${task.name}"></td>
                             <td th:text="${task.description}"></td>
+                            <td th:if="${task.startDate}" th:text="${dateFormatter.format(task.startDate)}"></td>
+                            <td th:unless="${task.startDate}"></td>
+
+                            <td th:if="${task.endDate}" th:text="${dateFormatter.format(task.endDate)}"></td>
+                            <td th:unless="${task.endDate}"></td>
                         </tr>
                         </tbody>
                     </table>

@@ -23,11 +23,9 @@ public class Task implements Serializable {
     @Column(name = "description", nullable = false, length = 2048)
     private String description;
 
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
     @Column(name = "startDate", nullable = true)
     private Date startDate;
 
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
     @Column(name = "endDate", nullable = true)
     private Date endDate;
 

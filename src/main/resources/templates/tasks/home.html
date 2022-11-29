@@ -12,7 +12,7 @@
             <div class="card">
                 <div class="card-header d-flex align-items-center justify-content-between">
                     <h1 class="display-4">Tasks</h1>
-                    <button class="btn btn-primary" type="button" onclick="loadCreateTaskModal()"><i class="material-icons">add</i></button>
+                    <button class="btn btn-success" type="button" onclick="loadCreateTaskModal()" data-toggle="tooltip" data-placement="top" title="Add Task"><i class="material-icons">add</i></button>
                 </div>
 
                 <div class="card-body">
@@ -21,6 +21,8 @@
                             <tr>
                                 <th scope="col">Title</th>
                                 <th scope="col">Description</th>
+                                <th scope="col">Start Date</th>
+                                <th scope="col">End Date</th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>
@@ -28,6 +30,11 @@
                             <tr th:each="task : ${tasks}">
                                 <td th:text="${task.name}"></td>
                                 <td th:text="${task.description}"></td>
+                                <td th:if="${task.startDate}" th:text="${dateFormatter.format(task.startDate)}"></td>
+                                <td th:unless="${task.startDate}"></td>
+
+                                <td th:if="${task.endDate}" th:text="${dateFormatter.format(task.endDate)}"></td>
+                                <td th:unless="${task.endDate}"></td>
                                 <td>
                                     <a class="btn btn-primary" th:href="@{/tasks/complete(taskID=${task.id})}" data-toggle="tooltip" data-placement="top" title="Complete"><i class="material-icons">check</i></a>
                                     <button type="button" class="btn btn-info" th:onclick="'javascript:loadEditTaskModal(' + ${task.id} + ')'" data-toggle="tooltip" data-placement="top" title="Edit"><i class="material-icons">edit</i></button>

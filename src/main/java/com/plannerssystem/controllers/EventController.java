@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
 
@@ -50,9 +51,13 @@ public class EventController {
 
         Set<Event> userEvents = eventRepository.getEventsByUser(user);
 
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy");
+
         model.addAttribute("user", user);
         model.addAttribute("events", userEvents);
         model.addAttribute("numEvents", userEvents.size());
+
+        model.addAttribute("dateFormatter", dateFormatter);
 
         return "events/home";
     }

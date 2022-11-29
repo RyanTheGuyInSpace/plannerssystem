@@ -12,11 +12,11 @@
     <div class="card">
         <div class="card-header d-flex align-items-center justify-content-between">
             <h1 class="display-4">Reminders</h1>
-            <button class="btn btn-primary" type="button" onclick="loadCreateReminderModal()"><i class="material-icons">add</i></button>
+            <button class="btn btn-success" type="button" onclick="loadCreateReminderModal()" data-toggle="tooltip" data-placement="top" title="Add Reminder"><i class="material-icons">add</i></button>
         </div>
 
         <div class="card-body">
-            <table class="table table-hover">
+            <table th:if="${reminders.size() > 0}" class="table table-hover">
                 <thead>
                 <tr>
                     <th scope="col">Title</th>
@@ -30,18 +30,20 @@
                 <tr th:each="reminder : ${reminders}">
                     <td th:text="${reminder.name}"></td>
                     <td th:text="${reminder.description}"></td>
-                    <td th:if="${reminder.startDate}" th:text="${dateFormatter.format(routine.startDate)}"></td>
+                    <td th:if="${reminder.startDate}" th:text="${dateFormatter.format(reminder.startDate)}"></td>
                     <td th:unless="${reminder.startDate}"></td>
-                    <td th:if="${reminder.endDate}" th:text="${dateFormatter.format(routine.endDate)}"></td>
+                    <td th:if="${reminder.endDate}" th:text="${dateFormatter.format(reminder.endDate)}"></td>
                     <td th:unless="${reminder.endDate}"></td>
                     <td>
-                        <a class="btn btn-primary" th:onclick="'javascript:loadEditReminderModal(' + ${reminder.id} + ')'"><i class="material-icons">edit</i></a>
-                        <a class="btn btn-danger" th:href="@{/reminders/delete(reminderID=${reminder.id})}"><i class="material-icons">delete</i></a>
+                        <a class="btn btn-primary" th:onclick="'javascript:loadEditReminderModal(' + ${reminder.id} + ')'" data-toggle="tooltip" data-placement="top" title="Edit"><i class="material-icons">edit</i></a>
+                        <a class="btn btn-danger" th:href="@{/reminders/delete(reminderID=${reminder.id})}" data-toggle="tooltip" data-placement="top" title="Delete"><i class="material-icons">delete</i></a>
                         <a class="btn btn-link" th:onclick="'javascript:loadAddReminderToTemplateModal(' + ${reminder.id} + ')'" data-toggle="tooltip" data-placement="top" title="Add to Template"><i class="material-icons">exit_to_app</i></a>
                     </td>
                 </tr>
                 </tbody>
             </table>
+
+            <p th:unless="${reminders.size() > 0}">No available Reminders.</p>
         </div>
 
         <div class="card-footer">

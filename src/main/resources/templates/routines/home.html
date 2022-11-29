@@ -12,7 +12,7 @@
   <div class="card">
     <div class="card-header d-flex align-items-center justify-content-between">
       <h1 class="display-4">Routines</h1>
-      <button class="btn btn-primary" type="button" onclick="loadCreateRoutineModal()"><i class="material-icons">add</i></button>
+      <button class="btn btn-success" type="button" onclick="loadCreateRoutineModal()" data-toggle="tooltip" data-placement="top" title="Add Routine"><i class="material-icons">add</i></button>
     </div>
 
     <div class="card-body">
@@ -31,8 +31,8 @@
             <td th:text="${routine.description}"></td>
             <td th:text="${routine.getTasks().size()}">
             <td>
-              <a class="btn btn-primary" th:href="@{/routines/edit(routineID=${routine.id})}"><i class="material-icons">edit</i></a>
-              <a class="btn btn-danger" th:href="@{/routines/delete(routineID=${routine.id})}"><i class="material-icons">delete</i></a>
+              <a class="btn btn-primary" th:href="@{/routines/edit(routineID=${routine.id})}" data-toggle="tooltip" data-placement="top" title="Edit"><i class="material-icons">edit</i></a>
+              <a class="btn btn-danger" th:href="@{/routines/delete(routineID=${routine.id})}" data-toggle="tooltip" data-placement="top" title="Delete"><i class="material-icons">delete</i></a>
             <a class="btn btn-link" th:onclick="'javascript:loadAddRoutineToTemplateModal(' + ${routine.id} + ')'" data-toggle="tooltip" data-placement="top" title="Add to Template"><i class="material-icons">exit_to_app</i></a>
             </td>
           </tr>

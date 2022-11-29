@@ -49,9 +49,13 @@ public class TaskController {
 
         Set<Task> userTasks = taskRepository.getTasksByUser(user);
 
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy");
+
         model.addAttribute("user", user);
         model.addAttribute("tasks", userTasks);
         model.addAttribute("numTasks", userTasks.size());
+
+        model.addAttribute("dateFormatter", dateFormatter);
 
         return "tasks/home";
     }
@@ -164,6 +168,8 @@ public class TaskController {
 
         taskToEdit.setName(task.getName());
         taskToEdit.setDescription(task.getDescription());
+        taskToEdit.setStartDate(task.getStartDate());
+        taskToEdit.setEndDate(task.getEndDate());
 
         taskRepository.save(taskToEdit);
 
