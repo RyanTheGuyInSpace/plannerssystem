@@ -18,6 +18,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.Access;
 import java.nio.file.AccessDeniedException;
@@ -85,7 +86,7 @@ public class TaskController {
     }
 
     @GetMapping("/complete")
-    public ModelAndView completeTask(long taskID) throws ResponseStatusException {
+    public ModelAndView completeTask(long taskID, RedirectAttributes attributes) throws ResponseStatusException {
         // Finds the user calling the method
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
@@ -103,6 +104,8 @@ public class TaskController {
         taskToComplete.complete();
 
         taskRepository.save(taskToComplete);
+
+        attributes.addFlashAttribute("success", String.format("Task \"%s\" completed", taskToComplete.getName()));
 
         return new ModelAndView("redirect:/tasks");
     }

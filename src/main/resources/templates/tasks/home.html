@@ -9,6 +9,7 @@
         <div th:replace="fragments :: navbar"></div>
 
         <div class="container">
+            <div class="alert alert-primary" role="alert" th:if="${success}" th:text="${success}"></div>
             <div class="card">
                 <div class="card-header d-flex align-items-center justify-content-between">
                     <h1 class="display-4">Tasks</h1>
