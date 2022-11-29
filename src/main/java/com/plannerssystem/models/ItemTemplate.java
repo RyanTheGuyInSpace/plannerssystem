@@ -30,7 +30,7 @@ public class ItemTemplate {
     private boolean isDeleted;
 
     @OneToMany(mappedBy = "itemTemplate", fetch = FetchType.EAGER)
-    public Set<ItemTemplateItem> templateItems;
+    private Set<ItemTemplateItem> templateItems;
 
     public Long getId() {
         return id;
@@ -84,8 +84,70 @@ public class ItemTemplate {
         return templateItems;
     }
 
+    public int getNumUndeletedTemplateItems() {
+        Set<ItemTemplateItem> allTemplateItems = this.templateItems;
+
+        int count = 0;
+
+        for (ItemTemplateItem item : allTemplateItems) {
+            if (!item.isDeleted()) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
     public void setTemplateItems(Set<ItemTemplateItem> templateItems) {
         this.templateItems = templateItems;
+    }
+
+    public LinkedList<ItemTemplateItem> getTaskTemplateItems() {
+        LinkedList<ItemTemplateItem> taskTemplateItems = new LinkedList<>();
+
+        for (ItemTemplateItem templateItem : this.templateItems) {
+            if (!templateItem.isDeleted() && templateItem.getTask() != null) {
+                taskTemplateItems.add(templateItem);
+            }
+        }
+
+        return taskTemplateItems;
+    }
+
+    public LinkedList<ItemTemplateItem> getEventTemplateItems() {
+        LinkedList<ItemTemplateItem> eventTemplateItems = new LinkedList<>();
+
+        for (ItemTemplateItem templateItem : this.templateItems) {
+            if (!templateItem.isDeleted() && templateItem.getEvent() != null) {
+                eventTemplateItems.add(templateItem);
+            }
+        }
+
+        return eventTemplateItems;
+    }
+
+    public LinkedList<ItemTemplateItem> getRoutineTemplateItems() {
+        LinkedList<ItemTemplateItem> routineTemplateItems = new LinkedList<>();
+
+        for (ItemTemplateItem templateItem : this.templateItems) {
+            if (!templateItem.isDeleted() && templateItem.getRoutine() != null) {
+                routineTemplateItems.add(templateItem);
+            }
+        }
+
+        return routineTemplateItems;
+    }
+
+    public LinkedList<ItemTemplateItem> getReminderTemplateItems() {
+        LinkedList<ItemTemplateItem> reminderTemplateItems = new LinkedList<>();
+
+        for (ItemTemplateItem templateItem : this.templateItems) {
+            if (!templateItem.isDeleted() && templateItem.getReminder() != null) {
+                reminderTemplateItems.add(templateItem);
+            }
+        }
+
+        return reminderTemplateItems;
     }
 
     public LinkedList<Task> getActivatableTasks(User user) {

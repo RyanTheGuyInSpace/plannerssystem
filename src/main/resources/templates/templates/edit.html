@@ -42,65 +42,152 @@
   <div class="card mb-3">
     <div class="card-header d-flex align-items-center justify-content-between">
       <h3>Tasks</h3>
-      <div>
-        <button class="btn btn-primary mr-2" type="button" th:onclick="'javascript:loadAddTaskToTemplateModal(' + ${template.id} + ')'">Add Existing</button>
-        <button class="btn btn-primary" type="button" th:onclick="'javascript:loadAddNewTaskToTemplateModal(' + ${template.id} + ')'">Add New</button>
-      </div>
-
     </div>
 
     <div class="card-body">
-      <table class="table table-hover">
+
+      <table th:if="${tasks.size() > 0}" class="table table-hover">
         <thead>
         <tr>
           <th scope="col">Title</th>
           <th scope="col">Description</th>
+          <th scope="col">Start Date</th>
+          <th scope="col">End Date</th>
           <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="task : ${templateTasks}">
-          <td th:text="${task.name}"></td>
-          <td th:text="${task.description}"></td>
+        <tr th:each="task : ${tasks}">
+          <td th:text="${task.getTask().name}"></td>
+          <td th:text="${task.getTask().description}"></td>
+          <td th:if="${task.getTask().startDate}" th:text="${dateFormatter.format(task.getTask().startDate)}"></td>
+          <td th:unless="${task.getTask().startDate}"></td>
+
+          <td th:if="${task.getTask().endDate}" th:text="${dateFormatter.format(task.getTask().endDate)}"></td>
+          <td th:unless="${task.getTask().endDate}"></td>
           <td>
-            <a class="btn btn-danger" th:href="@{/templates/removeTask(templateID=${template.id})(taskID=${task.id})}"><i class="material-icons">delete</i></a>
+            <a class="btn btn-danger" th:href="@{/templates/deleteItemFromTemplate(templateID=${template.id},itemID=${task.id})}" data-toggle="tooltip" data-placement="top" title="Delete from Template"><i class="material-icons">delete</i></a>
           </td>
         </tr>
         </tbody>
       </table>
+
+      <p th:unless="${tasks.size() > 0}">There are no Tasks in this Template.</p>
+
     </div>
   </div>
 
-  <div class="card">
+  <div class="card mb-3">
     <div class="card-header d-flex align-items-center justify-content-between">
-      <h3>Subtemplates</h3>
-      <div>
-        <button class="btn btn-primary mr-2" type="button" th:onclick="'javascript:loadAddSubtemplateToTemplateModal(' + ${template.id} + ')'">Add</button>
-      </div>
-
+      <h3>Events</h3>
     </div>
 
     <div class="card-body">
-      <table class="table table-hover">
+
+      <table th:if="${events.size() > 0}" class="table table-hover">
         <thead>
         <tr>
           <th scope="col">Title</th>
           <th scope="col">Description</th>
-          <th scope="col">Tasks</th>
+          <th scope="col">Start Date</th>
+          <th scope="col">End Date</th>
           <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="subtemplate : ${subtemplates}">
-          <td th:text="${subtemplate.name}"></td>
-          <td th:text="${subtemplate.description}"></td>
-          <td th:text="${subtemplate.getTasks().size()}">
+        <tr th:each="event : ${events}">
+          <td th:text="${event.getEvent().name}"></td>
+          <td th:text="${event.getEvent().description}"></td>
+          <td th:if="${event.getEvent().startDate}" th:text="${dateFormatter.format(event.getEvent().startDate)}"></td>
+          <td th:unless="${event.getEvent().startDate}"></td>
+
+          <td th:if="${event.getEvent().endDate}" th:text="${dateFormatter.format(event.getEvent().endDate)}"></td>
+          <td th:unless="${event.getEvent().endDate}"></td>
           <td>
-            <a class="btn btn-danger" th:href="@{/templates/removeSubtemplateFromTemplate(templateID=${template.id}, subtemplateID=${subtemplate.id})}"><i class="material-icons">delete</i></a>
+            <a class="btn btn-danger" th:href="@{/templates/deleteItemFromTemplate(templateID=${template.id},itemID=${event.id})}" data-toggle="tooltip" data-placement="top" title="Delete from Template"><i class="material-icons">delete</i></a>
           </td>
         </tr>
         </tbody>
       </table>
+
+      <p th:unless="${events.size() > 0}">There are no Events in this Template.</p>
+
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header d-flex align-items-center justify-content-between">
+      <h3>Routines</h3>
+    </div>
+
+    <div class="card-body">
+
+      <table th:if="${routines.size() > 0}" class="table table-hover">
+        <thead>
+        <tr>
+          <th scope="col">Title</th>
+          <th scope="col">Description</th>
+          <th scope="col">Start Date</th>
+          <th scope="col">End Date</th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="routine : ${routines}">
+          <td th:text="${routine.getRoutine().name}"></td>
+          <td th:text="${routine.getRoutine().description}"></td>
+          <td th:if="${routine.getRoutine().startDate}" th:text="${dateFormatter.format(routine.getRoutine().startDate)}"></td>
+          <td th:unless="${routine.getRoutine().startDate}"></td>
+
+          <td th:if="${routine.getRoutine().endDate}" th:text="${dateFormatter.format(routine.getRoutine().endDate)}"></td>
+          <td th:unless="${routine.getRoutine().endDate}"></td>
+          <td>
+            <a class="btn btn-danger" th:href="@{/templates/deleteItemFromTemplate(templateID=${template.id},itemID=${routine.id})}" data-toggle="tooltip" data-placement="top" title="Delete from Template"><i class="material-icons">delete</i></a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+      <p th:unless="${routines.size() > 0}">There are no Routines in this Template.</p>
+
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header d-flex align-items-center justify-content-between">
+      <h3>Reminders</h3>
+    </div>
+
+    <div class="card-body">
+
+      <table th:if="${reminders.size() > 0}" class="table table-hover">
+        <thead>
+        <tr>
+          <th scope="col">Title</th>
+          <th scope="col">Description</th>
+          <th scope="col">Start Date</th>
+          <th scope="col">End Date</th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="reminder : ${reminders}">
+          <td th:text="${reminder.getReminder().name}"></td>
+          <td th:text="${reminder.getReminder().description}"></td>
+          <td th:if="${reminder.getReminder().startDate}" th:text="${dateFormatter.format(reminder.getReminder().startDate)}"></td>
+          <td th:unless="${reminder.getReminder().startDate}"></td>
+
+          <td th:if="${reminder.getReminder().endDate}" th:text="${dateFormatter.format(reminder.getReminder().endDate)}"></td>
+          <td th:unless="${reminder.getReminder().endDate}"></td>
+          <td>
+            <a class="btn btn-danger" th:href="@{/templates/deleteItemFromTemplate(templateID=${template.id},itemID=${reminder.id})}" data-toggle="tooltip" data-placement="top" title="Delete from Template"><i class="material-icons">delete</i></a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+      <p th:unless="${reminders.size() > 0}">There are no Reminders in this Template.</p>
+
     </div>
   </div>
 </div>

@@ -29,7 +29,7 @@
                 <tr th:each="template : ${templates}">
                     <td th:text="${template.name}"></td>
                     <td th:text="${template.description}"></td>
-                    <td th:text="${template.getTemplateItems().size()}"></td>
+                    <td th:text="${template.getNumUndeletedTemplateItems()}"></td>
                     <td>
                         <a class="btn btn-success" th:href="@{/templates/activateTemplate(templateID=${template.id})}" data-toggle="tooltip" data-placement="top" title="Activate"><i class="material-icons">arrow_upward</i></a>
                         <a class="btn btn-primary" th:href="@{/templates/edit(templateID=${template.id})}" data-toggle="tooltip" data-placement="top" title="Edit"><i class="material-icons">edit</i></a>

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.Set;
@@ -214,6 +215,20 @@ public class TemplateController {
 
         model.addAttribute("template", targetTemplate);
 
+        LinkedList<ItemTemplateItem> taskTemplateItems = targetTemplate.getTaskTemplateItems();
+        LinkedList<ItemTemplateItem> eventTemplateItems = targetTemplate.getEventTemplateItems();
+        LinkedList<ItemTemplateItem> routineTemplateItems = targetTemplate.getRoutineTemplateItems();
+        LinkedList<ItemTemplateItem> reminderTemplateItems = targetTemplate.getReminderTemplateItems();
+
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy");
+
+        model.addAttribute("tasks", taskTemplateItems);
+        model.addAttribute("events", eventTemplateItems);
+        model.addAttribute("routines", routineTemplateItems);
+        model.addAttribute("reminders", reminderTemplateItems);
+
+        model.addAttribute("dateFormatter", dateFormatter);
+
         return "templates/edit";
     }
 
@@ -288,5 +303,28 @@ public class TemplateController {
         reminderRepository.saveAll(remindersToActivate);
 
         return new ModelAndView("redirect:/home");
+    }
+
+    @GetMapping("/deleteItemFromTemplate")
+    public ModelAndView deleteItemFromTemplate(long templateID, long itemID) {
+        // Finds the user calling the method
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Queries the user from the database
+        User user = userRepository.findByUserName(currentPrincipalName);
+
+        ItemTemplate targetTemplate = templateRepository.getItemTemplateByID(templateID);
+        ItemTemplateItem targetItem = templateItemRepository.getItemTemplateItemByID(itemID);
+
+        if (targetTemplate == null || !targetTemplate.getUser().equals(user) || targetItem == null || !targetItem.getItemTemplate().equals(targetTemplate)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        targetItem.setDeleted(true);
+
+        templateItemRepository.save(targetItem);
+
+        return new ModelAndView("redirect:/templates/edit?templateID=" + templateID);
     }
 }
